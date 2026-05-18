@@ -1,20 +1,39 @@
+import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
+import { createOrder } from '../services/publicationsService'
 
 const Cart = () => {
   const { items, totalItems, totalPrice, removeItem, updateQuantity, clearCart } = useCart()
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const ENVIO = 3000
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!isAuthenticated) {
       navigate('/login')
-    } else {
+      return
+    }
+    setLoading(true)
+    setError(null)
+    try {
+      const orderData = {
+        items: items.map(item => ({
+          publication_id: item.id,
+          cantidad: item.cantidad,
+        })),
+      }
+      await createOrder(orderData)
       clearCart()
       navigate('/pedidos')
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error al procesar el pedido. Intenta de nuevo.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -87,8 +106,9 @@ const Cart = () => {
             <span>Total</span>
             <span>${(totalPrice + ENVIO).toLocaleString('es-CL')}</span>
           </div>
-          <button className="mk-btn-dark" onClick={handleCheckout}>
-            {isAuthenticated ? 'Proceder al pago →' : 'Inicia sesión para comprar'}
+          {error && <div style={{ color: 'red', fontSize: 13, marginBottom: 8 }}>{error}</div>}
+          <button className="mk-btn-dark" onClick={handleCheckout} disabled={loading}>
+            {loading ? 'Procesando...' : isAuthenticated ? 'Proceder al pago →' : 'Inicia sesión para comprar'}
           </button>
           <div className="mk-secure-label">Pago 100% seguro</div>
         </div>

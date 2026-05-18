@@ -75,6 +75,26 @@ router.get("/", async (req, res) => {
 });
 
 /**
+ * GET /publications/mine
+ * Obtener publicaciones propias del usuario autenticado.
+ */
+router.get("/mine", verifyToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, titulo, precio, stock, imagen_url, created_at
+       FROM publication
+       WHERE user_id = $1
+       ORDER BY created_at DESC`,
+      [req.user.id]
+    );
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener publicaciones propias:", error.message);
+    res.status(500).json({ error: "Error interno del servidor." });
+  }
+});
+
+/**
  * GET /api/publications/:id
  * Obtener detalle de una publicación.
  */
