@@ -23,25 +23,13 @@ const app = express();
 //  Middlewares globales
 // ============================================================
 
-// CORS: permite localhost en desarrollo y la URL de producción configurada en FRONTEND_URL
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:4173",
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
+// CORS: permite cualquier origen (adecuado para proyecto académico)
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Permitir peticiones sin origen (ej. Postman, curl)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origen no permitido → ${origin}`));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
