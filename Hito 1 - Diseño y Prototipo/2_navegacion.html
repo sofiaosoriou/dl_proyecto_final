@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Navegación — MktCafé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: #111; padding: 40px 20px; }
+
+    .cover { text-align: center; padding: 50px 0 44px; }
+    .cover-tag { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #999; margin-bottom: 10px; }
+    .cover h1 { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; letter-spacing: -2px; color: #111; margin-bottom: 6px; }
+    .cover-sub { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: #bbb; margin-bottom: 28px; }
+    .cover-divider { width: 40px; height: 2px; background: #111; margin: 0 auto; }
+
+    .card {
+      background: #fff; border: 1px solid #ddd;
+      max-width: 900px; margin: 0 auto;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      padding: 52px 52px;
+    }
+
+    /* Zones */
+    .zone { padding: 28px 28px; }
+    .zone-public  { background: #f9f9f9; border: 1px solid #e8e8e8; }
+    .zone-private { background: #111;    border: 1px solid #111; }
+
+    .zone-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .zone-label  { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; font-weight: 600; }
+    .zone-public  .zone-label { color: #999; }
+    .zone-private .zone-label { color: #555; }
+
+    .zone-badge { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; padding: 4px 12px; }
+    .badge-pub  { background: #111; color: #fff; }
+    .badge-priv { background: #fff; color: #111; }
+
+    .zone-line { flex: 1; height: 1px; }
+    .zone-public  .zone-line { background: #e0e0e0; }
+    .zone-private .zone-line { background: #333; }
+
+    .zone-note { font-size: 10px; letter-spacing: 1px; }
+    .zone-public  .zone-note { color: #ccc; }
+    .zone-private .zone-note { color: #444; }
+
+    /* Nodes */
+    .node { text-align: center; padding: 16px 14px; min-width: 118px; }
+    .node-public  { background: #fff;    border: 1px solid #ddd; }
+    .node-private { background: #1a1a1a; border: 1px solid #333; }
+
+    .node-icon { font-size: 20px; margin-bottom: 6px; }
+    .node-name { font-size: 11px; font-weight: 600; line-height: 1.3; }
+    .node-public  .node-name { color: #111; }
+    .node-private .node-name { color: #fff; }
+    .node-desc { font-size: 9px; margin-top: 4px; line-height: 1.5; }
+    .node-public  .node-desc { color: #bbb; }
+    .node-private .node-desc { color: #555; }
+
+    /* Arrows */
+    .arr { color: #ccc; font-size: 16px; padding: 0 10px; display: flex; align-items: center; flex-shrink: 0; }
+    .arr-d { color: #444; font-size: 16px; padding: 0 10px; display: flex; align-items: center; flex-shrink: 0; }
+    .arr-v { text-align: center; color: #444; font-size: 14px; padding: 8px 0; }
+
+    /* Gate */
+    .gate-wrap { text-align: center; padding: 24px 0 0; }
+    .gate-line-v { width: 1px; height: 24px; background: #ddd; margin: 0 auto; }
+    .gate {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #111; color: #fff; padding: 14px 48px;
+    }
+    .gate-title { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+    .gate-sub { font-size: 10px; color: #555; }
+
+    /* C2C badge */
+    .c2c-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #f9f9f9; border: 1px solid #eee;
+      padding: 10px 20px; margin: 20px auto 0; font-size: 11px; color: #777;
+    }
+    .c2c-badge strong { color: #111; }
+
+    /* Grid de vistas privadas */
+    .private-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .private-col { display: flex; flex-direction: column; gap: 10px; }
+    .col-title {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: #555; margin-bottom: 4px; padding-bottom: 8px;
+      border-bottom: 1px solid #2a2a2a; font-weight: 600;
+    }
+
+    /* Legend */
+    .legend { margin-top: 32px; padding: 20px 24px; background: #f9f9f9; border: 1px solid #eee; }
+    .legend-title { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #999; margin-bottom: 12px; font-weight: 600; }
+    .legend-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 12px; color: #777; line-height: 1.6; }
+    .legend-dot { width: 10px; height: 10px; flex-shrink: 0; margin-top: 4px; }
+    code { background: #f0f0f0; padding: 1px 5px; font-size: 11px; color: #555; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-tag">★ Proyecto Final · Desafío Latam · Hito 1 ★</div>
+  <h1>MktCafé</h1>
+  <div class="cover-sub">Diagrama de Navegación &nbsp;|&nbsp; Modelo C2C</div>
+  <div class="cover-divider"></div>
+</div>
+
+<div class="card">
+
+  <!-- ══ PÚBLICA ══ -->
+  <div class="zone zone-public">
+    <div class="zone-header">
+      <span class="zone-label">Sección</span>
+      <span class="zone-badge badge-pub">Pública</span>
+      <div class="zone-line"></div>
+      <span class="zone-note">Sin autenticación requerida</span>
+    </div>
+    <div style="display:flex; align-items:center;">
+      <div class="node node-public">
+        <div class="node-icon">🏠</div>
+        <div class="node-name">Página Principal</div>
+        <div class="node-desc">Hero · Cafés destacados<br>Categorías</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node node-public">
+        <div class="node-icon">📝</div>
+        <div class="node-name">Registro</div>
+        <div class="node-desc">Nombre, email<br>Contraseña · Foto</div>
+      </div>
+      <div class="arr">↔</div>
+      <div class="node node-public">
+        <div class="node-icon">🔑</div>
+        <div class="node-name">Inicio de Sesión</div>
+        <div class="node-desc">Email + contraseña<br>→ token JWT</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ GATE ══ -->
+  <div class="gate-wrap">
+    <div class="gate-line-v"></div>
+    <div class="gate">
+      <div class="gate-title">🔐 &nbsp; Autenticación requerida</div>
+      <div class="gate-sub">Token JWT en variable de sesión del frontend · Rutas protegidas con React Router DOM</div>
+    </div>
+    <div class="gate-line-v"></div>
+  </div>
+
+  <!-- ══ C2C BADGE ══ -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <div class="c2c-badge">
+      <span>🔄</span>
+      <span><strong>Modelo C2C:</strong> Todo usuario autenticado puede ser vendedor, comprador, o ambos al mismo tiempo</span>
+    </div>
+  </div>
+
+  <!-- ══ PRIVADA ══ -->
+  <div class="zone zone-private">
+    <div class="zone-header">
+      <span class="zone-label">Sección</span>
+      <span class="zone-badge badge-priv">Privada</span>
+      <div class="zone-line"></div>
+      <span class="zone-note">Cualquier usuario autenticado · Puede vender y comprar</span>
+    </div>
+
+    <div class="private-grid">
+
+      <!-- Col 1: Como comprador -->
+      <div class="private-col">
+        <div class="col-title">🛒 Como comprador</div>
+        <div class="node node-private">
+          <div class="node-icon">☕</div>
+          <div class="node-name">Tienda / Galería</div>
+          <div class="node-desc">Explorar cafés<br>Filtros de búsqueda</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">🔍</div>
+          <div class="node-name">Detalle de Publicación</div>
+          <div class="node-desc">Ficha del café<br>Vendedor · Agregar al carrito</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">🛍️</div>
+          <div class="node-name">Carrito de Compra</div>
+          <div class="node-desc">Ítems · Cantidades<br>Total</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">💳</div>
+          <div class="node-name">Checkout</div>
+          <div class="node-desc">Dirección · Confirmar<br>pedido</div>
+        </div>
+      </div>
+
+      <!-- Col 2: Mi cuenta -->
+      <div class="private-col">
+        <div class="col-title">👤 Mi cuenta</div>
+        <div class="node node-private">
+          <div class="node-icon">👤</div>
+          <div class="node-name">Mi Perfil</div>
+          <div class="node-desc">Datos · Avatar<br>Bio · Editar</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">📦</div>
+          <div class="node-name">Mis Pedidos</div>
+          <div class="node-desc">Historial de compras<br>Estado · Detalle</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">❤️</div>
+          <div class="node-name">Mis Favoritos</div>
+          <div class="node-desc">Cafés guardados<br>de otros vendedores</div>
+        </div>
+      </div>
+
+      <!-- Col 3: Como vendedor -->
+      <div class="private-col">
+        <div class="col-title">📢 Como vendedor</div>
+        <div class="node node-private">
+          <div class="node-icon">➕</div>
+          <div class="node-name">Publicar Café</div>
+          <div class="node-desc">Nombre · Origen<br>Molienda · Tueste<br>Precio · Imagen</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">📋</div>
+          <div class="node-name">Mis Publicaciones</div>
+          <div class="node-desc">Lista de mis cafés<br>publicados</div>
+        </div>
+        <div class="arr-v">↓</div>
+        <div class="node node-private">
+          <div class="node-icon">✏️</div>
+          <div class="node-name">Editar / Eliminar</div>
+          <div class="node-desc">Modificar precio<br>stock, descripción</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ LEYENDA ══ -->
+  <div class="legend">
+    <div class="legend-title">Leyenda</div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#111;"></div>
+      <span><strong style="color:#111;">Vistas públicas:</strong> Página principal, Registro e Inicio de sesión. Sin restricciones de acceso.</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#555;"></div>
+      <span><strong style="color:#111;">Modelo C2C:</strong> Un mismo usuario puede tener publicaciones activas como vendedor y al mismo tiempo comprar cafés de otros usuarios. No hay roles diferenciados en la plataforma.</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#999;"></div>
+      <span><strong style="color:#111;">Sesión en frontend:</strong> Al hacer login se guarda <code>&#123; token, user: &#123; id, nombre, email, foto_url &#125; &#125;</code>. El token se adjunta como <code>Authorization: Bearer &lt;token&gt;</code> en cada petición privada.</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ddd; border:1px solid #ccc;"></div>
+      <span><strong style="color:#111;">Restricción:</strong> Un usuario no puede comprar sus propias publicaciones. Esta validación se realiza en el backend comparando el <code>user_id</code> del vendedor con el del comprador.</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center; margin-top:28px; margin-bottom:40px; font-size:10px; color:#ccc; letter-spacing:2px; text-transform:uppercase;">
+  Hito 1 · MktCafé · Proyecto Final Desafío Latam Full Stack + React
+</div>
+
+</body>
+</html>

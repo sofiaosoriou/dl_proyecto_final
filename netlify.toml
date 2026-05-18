@@ -1,7 +1,7 @@
 [build]
-  base    = "Hito 2- Desarrollo Frontend/mktcafe-frontend"
+  base    = "Hito2-Frontend/mktcafe-frontend"
   command = "npm run build"
-  publish = "Hito 2- Desarrollo Frontend/mktcafe-frontend/dist"
+  publish = "Hito2-Frontend/mktcafe-frontend/dist"
 
 [[redirects]]
   from   = "/*"

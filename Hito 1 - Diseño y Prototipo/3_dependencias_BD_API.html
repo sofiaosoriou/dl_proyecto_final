@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dependencias, BD y API - MktCafé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f4f4f4; color: #111; padding: 30px; }
+
+    h1 { text-align: center; font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; letter-spacing: -2px; color: #111; margin-bottom: 6px; }
+    .subtitle { text-align: center; color: #bbb; margin-bottom: 40px; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; }
+
+    .section-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 16px;
+    }
+    .section-num {
+      background: #111;
+      color: #fff;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; flex-shrink: 0;
+      font-family: 'Playfair Display', serif;
+    }
+    .section-title { font-size: 18px; font-weight: 700; color: #111; font-family: 'Playfair Display', serif; letter-spacing: -0.3px; }
+    .section-points { font-size: 9px; background: #111; color: #fff; padding: 4px 10px; font-weight: 600; margin-left: auto; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* ── DEPENDENCIAS ── */
+    .dep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .dep-col-title {
+      font-size: 13px; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      padding: 8px 14px;
+      border-radius: 6px;
+    }
+    .dep-col-title.fe { background: #f4f4f4; color: #111; border-left: 3px solid #111; }
+    .dep-col-title.be { background: #111; color: #fff; border-left: 3px solid #333; }
+    .dep-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+    }
+    .dep-item:last-child { border-bottom: none; }
+    .dep-name { font-weight: bold; color: #333; min-width: 160px; }
+    .dep-version { font-size: 11px; background: #f0f0f0; border-radius: 4px; padding: 1px 6px; color: #666; margin-right: 4px; white-space: nowrap; }
+    .dep-desc { font-size: 11px; color: #888; }
+
+    /* ── BASE DE DATOS ── */
+    .er-diagram { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+    .table-box {
+      border: 2px solid #111;
+      border-radius: 0;
+      overflow: hidden;
+      min-width: 200px;
+      font-size: 12px;
+    }
+    .table-header {
+      background: #111;
+      color: #fff;
+      padding: 8px 14px;
+      font-weight: bold;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .table-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 11px;
+    }
+    .table-row:last-child { border-bottom: none; }
+    .badge-pk { background: #111; color: #fff; font-size: 9px; font-weight: bold; padding: 1px 4px; }
+    .badge-fk { background: #777; color: #fff; font-size: 9px; font-weight: bold; padding: 1px 4px; }
+    .badge-uq { background: #ddd; color: #111; font-size: 9px; font-weight: bold; padding: 1px 4px; }
+    .col-name { font-weight: bold; color: #333; min-width: 120px; }
+    .col-type { color: #888; font-size: 10px; }
+    .col-null { color: #bbb; font-size: 10px; }
+
+    .relations-box {
+      background: #f9f9f9;
+      border: 1px solid #e8e8e8;
+      padding: 16px 20px;
+      margin-top: 20px;
+    }
+    .relations-title { font-weight: bold; color: #111; font-size: 13px; margin-bottom: 12px; }
+    .relation-item { font-size: 12px; color: #555; margin-bottom: 8px; padding-left: 10px; border-left: 3px solid #ccc; }
+    .relation-arrow { color: #111; font-weight: bold; }
+
+    /* ── API REST ── */
+    .api-group { margin-bottom: 24px; }
+    .api-group-title {
+      font-size: 13px; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: #111; margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #111;
+    }
+    .endpoint {
+      border: 1px solid #e0e0e0;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f9f9f9;
+    }
+    .method {
+      font-size: 11px; font-weight: bold;
+      padding: 3px 10px;
+      min-width: 50px; text-align: center;
+    }
+    .GET    { background: #d4edda; color: #155724; }
+    .POST   { background: #cce5ff; color: #004085; }
+    .PUT    { background: #fff3cd; color: #856404; }
+    .DELETE { background: #f8d7da; color: #721c24; }
+    .endpoint-path { font-family: monospace; font-size: 13px; color: #333; font-weight: bold; }
+    .endpoint-desc { font-size: 11px; color: #888; margin-left: auto; }
+    .lock-badge { font-size: 10px; background: #111; color: #fff; padding: 2px 8px; letter-spacing: 1px; }
+    .owner-badge { font-size: 10px; background: #333; color: #fff; padding: 2px 8px; letter-spacing: 1px; }
+
+    .endpoint-body { padding: 12px 14px; background: #fff; border-top: 1px solid #f0f0f0; }
+    .contract-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .contract-box { background: #1e1e1e; padding: 12px; }
+    .contract-label { font-size: 10px; color: #888; margin-bottom: 6px; }
+    .contract-code { font-family: monospace; font-size: 11px; color: #d4d4d4; white-space: pre; line-height: 1.6; }
+    .key { color: #9cdcfe; }
+    .string { color: #ce9178; }
+    .number { color: #b5cea8; }
+    .comment { color: #6a9955; }
+    .boolean { color: #569cd6; }
+  </style>
+</head>
+<body>
+
+<h1>☕ MktCafé — Documentación Técnica</h1>
+<p class="subtitle">Proyecto Final · Hito 1 · Dependencias · Base de Datos · Contrato API REST</p>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECCIÓN 3: DEPENDENCIAS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">Lista de Dependencias</div>
+    <div class="section-points">1 Punto</div>
+  </div>
+
+  <div class="dep-grid">
+    <!-- FRONTEND -->
+    <div>
+      <div class="dep-col-title fe">⚛️ Frontend (React)</div>
+      <div class="dep-item">
+        <div><div class="dep-name">react <span class="dep-version">^18.2.0</span></div><div class="dep-desc">Librería principal para construir la interfaz de usuario</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">react-dom <span class="dep-version">^18.2.0</span></div><div class="dep-desc">Renderizado de React en el DOM del navegador</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">react-router-dom <span class="dep-version">^6.22.0</span></div><div class="dep-desc">Enrutamiento del lado del cliente y rutas protegidas (privadas/públicas)</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">axios <span class="dep-version">^1.6.7</span></div><div class="dep-desc">Cliente HTTP para consumir la API REST del backend</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">bootstrap <span class="dep-version">^5.3.3</span></div><div class="dep-desc">Framework CSS para diseño responsivo y componentes visuales</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">react-hook-form <span class="dep-version">^7.51.0</span></div><div class="dep-desc">Manejo de formularios con validación eficiente</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">vite <span class="dep-version">^5.2.0</span></div><div class="dep-desc">Herramienta de build y servidor de desarrollo ultrarrápido</div></div>
+      </div>
+    </div>
+
+    <!-- BACKEND -->
+    <div>
+      <div class="dep-col-title be">🟢 Backend (Node.js / Express)</div>
+      <div class="dep-item">
+        <div><div class="dep-name">express <span class="dep-version">^4.18.3</span></div><div class="dep-desc">Framework web para crear el servidor y la API REST</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">pg <span class="dep-version">^8.11.3</span></div><div class="dep-desc">Cliente de PostgreSQL para Node.js (node-postgres)</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">bcryptjs <span class="dep-version">^2.4.3</span></div><div class="dep-desc">Hashing seguro de contraseñas de usuarios</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">jsonwebtoken <span class="dep-version">^9.0.2</span></div><div class="dep-desc">Generación y verificación de tokens JWT para autenticación sin roles</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">cors <span class="dep-version">^2.8.5</span></div><div class="dep-desc">Middleware para habilitar peticiones desde el frontend (CORS)</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">dotenv <span class="dep-version">^16.4.5</span></div><div class="dep-desc">Carga de variables de entorno desde el archivo .env</div></div>
+      </div>
+      <div class="dep-item">
+        <div><div class="dep-name">multer <span class="dep-version">^1.4.5</span></div><div class="dep-desc">Middleware para manejar subida de imágenes (multipart/form-data)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECCIÓN 4: BASE DE DATOS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">Diseño de Tablas — Base de Datos PostgreSQL</div>
+    <div class="section-points">2 Puntos</div>
+  </div>
+
+  <!-- C2C note -->
+  <div style="background:#111; color:#fff; padding:14px 18px; margin-bottom:24px; font-size:12px; display:flex; gap:10px; align-items:center;">
+    <span style="font-size:16px;">🔄</span>
+    <span><strong style="color:#fff;">Modelo C2C (Consumer to Consumer):</strong> No hay roles de administrador. Cualquier usuario autenticado puede publicar cafés como vendedor y comprar cafés de otros usuarios. La tabla <code style="background:#333; padding:1px 5px;">publications</code> registra al vendedor mediante <code style="background:#333; padding:1px 5px;">user_id</code>. Un usuario no puede comprar sus propias publicaciones (validación en backend).</span>
+  </div>
+
+  <div class="er-diagram" style="flex-wrap:wrap; gap:16px;">
+
+    <!-- TABLA USERS -->
+    <div class="table-box">
+      <div class="table-header">👤 users</div>
+      <div class="table-row"><span class="badge-pk">PK</span><span class="col-name">id</span><span class="col-type">SERIAL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">nombre</span><span class="col-type">VARCHAR(100)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span class="badge-uq">UQ</span><span class="col-name">email</span><span class="col-type">VARCHAR(150)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">password</span><span class="col-type">VARCHAR(255)</span><span class="col-null">NOT NULL (hash)</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">foto_url</span><span class="col-type">VARCHAR(300)</span><span class="col-null">NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">bio</span><span class="col-type">TEXT</span><span class="col-null">NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">created_at</span><span class="col-type">TIMESTAMP</span><span class="col-null">DEFAULT NOW()</span></div>
+    </div>
+
+    <div style="display:flex; align-items:center; color:#ccc; font-size:22px; padding:0 4px;">⟷</div>
+
+    <!-- TABLA PUBLICATIONS -->
+    <div class="table-box">
+      <div class="table-header">☕ publications</div>
+      <div class="table-row"><span class="badge-pk">PK</span><span class="col-name">id</span><span class="col-type">SERIAL</span></div>
+      <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">user_id</span><span class="col-type">INTEGER</span><span class="col-null">→ users.id</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">titulo</span><span class="col-type">VARCHAR(150)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">descripcion</span><span class="col-type">TEXT</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">precio</span><span class="col-type">NUMERIC(10,2)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">tipo_molienda</span><span class="col-type">VARCHAR(50)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">tipo_tueste</span><span class="col-type">VARCHAR(50)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">origen_pais</span><span class="col-type">VARCHAR(80)</span><span class="col-null">NOT NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">origen_region</span><span class="col-type">VARCHAR(100)</span><span class="col-null">NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">imagen_url</span><span class="col-type">VARCHAR(300)</span><span class="col-null">NULL</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">stock</span><span class="col-type">INTEGER</span><span class="col-null">DEFAULT 0</span></div>
+      <div class="table-row"><span style="width:26px;"></span><span class="col-name">created_at</span><span class="col-type">TIMESTAMP</span><span class="col-null">DEFAULT NOW()</span></div>
+    </div>
+
+    <div style="display:flex; align-items:center; color:#ccc; font-size:22px; padding:0 4px;">⟷</div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+
+      <!-- TABLA ORDERS -->
+      <div class="table-box">
+        <div class="table-header">📦 orders</div>
+        <div class="table-row"><span class="badge-pk">PK</span><span class="col-name">id</span><span class="col-type">SERIAL</span></div>
+        <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">buyer_id</span><span class="col-type">INTEGER</span><span class="col-null">→ users.id</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">total</span><span class="col-type">NUMERIC(10,2)</span><span class="col-null">NOT NULL</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">estado</span><span class="col-type">VARCHAR(30)</span><span class="col-null">DEFAULT 'pendiente'</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">direccion</span><span class="col-type">TEXT</span><span class="col-null">NOT NULL</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">created_at</span><span class="col-type">TIMESTAMP</span><span class="col-null">DEFAULT NOW()</span></div>
+      </div>
+
+      <!-- TABLA ORDER_ITEMS -->
+      <div class="table-box">
+        <div class="table-header">🛒 order_items</div>
+        <div class="table-row"><span class="badge-pk">PK</span><span class="col-name">id</span><span class="col-type">SERIAL</span></div>
+        <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">order_id</span><span class="col-type">INTEGER</span><span class="col-null">→ orders.id</span></div>
+        <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">publication_id</span><span class="col-type">INTEGER</span><span class="col-null">→ publications.id</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">cantidad</span><span class="col-type">INTEGER</span><span class="col-null">NOT NULL</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">precio_unitario</span><span class="col-type">NUMERIC(10,2)</span><span class="col-null">NOT NULL</span></div>
+      </div>
+
+      <!-- TABLA FAVORITES -->
+      <div class="table-box">
+        <div class="table-header">❤️ favorites</div>
+        <div class="table-row"><span class="badge-pk">PK</span><span class="col-name">id</span><span class="col-type">SERIAL</span></div>
+        <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">user_id</span><span class="col-type">INTEGER</span><span class="col-null">→ users.id</span></div>
+        <div class="table-row"><span class="badge-fk">FK</span><span class="col-name">publication_id</span><span class="col-type">INTEGER</span><span class="col-null">→ publications.id</span></div>
+        <div class="table-row"><span style="width:26px;"></span><span class="col-name">created_at</span><span class="col-type">TIMESTAMP</span><span class="col-null">DEFAULT NOW()</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="relations-box">
+    <div class="relations-title">🔗 Relaciones entre tablas</div>
+    <div class="relation-item"><span class="relation-arrow">users → publications</span>: Un usuario puede publicar muchos cafés como vendedor (1:N). <code>publications.user_id</code> referencia a <code>users.id</code>.</div>
+    <div class="relation-item"><span class="relation-arrow">users → orders</span>: Un usuario puede realizar muchos pedidos como comprador (1:N). <code>orders.buyer_id</code> referencia a <code>users.id</code>.</div>
+    <div class="relation-item"><span class="relation-arrow">orders → order_items</span>: Un pedido contiene uno o más ítems (1:N). <code>order_items.order_id</code> referencia a <code>orders.id</code>.</div>
+    <div class="relation-item"><span class="relation-arrow">publications → order_items</span>: Una publicación puede aparecer en muchos ítems de pedido (1:N). <code>order_items.publication_id</code> referencia a <code>publications.id</code>.</div>
+    <div class="relation-item"><span class="relation-arrow">users + publications → favorites</span>: Un usuario puede marcar como favorito muchas publicaciones (N:M). La tabla <code>favorites</code> actúa como tabla intermedia con restricción <code>UNIQUE(user_id, publication_id)</code>.</div>
+    <div class="relation-item"><span class="relation-arrow">Restricción C2C</span>: El backend valida que <code>orders.buyer_id ≠ publications.user_id</code> en cada ítem del pedido. Un usuario no puede comprar sus propias publicaciones.</div>
+    <div class="relation-item"><span class="relation-arrow">Carrito</span>: El carrito se gestiona en el frontend (Context API / useState). Al hacer checkout se envía al backend para crear la orden y sus ítems.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECCIÓN 5: CONTRATO API REST -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-card">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">Contrato de Datos — API REST</div>
+    <div class="section-points">2 Puntos</div>
+  </div>
+
+  <!-- AUTENTICACIÓN -->
+  <div class="api-group">
+    <div class="api-group-title">🔑 Autenticación</div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/users</span>
+        <span class="endpoint-desc">Registrar nuevo usuario</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body</div>
+            <div class="contract-code">{
+  <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+  <span class="key">"email"</span>: <span class="string">"String"</span>,
+  <span class="key">"password"</span>: <span class="string">"String"</span>,
+  <span class="key">"foto_url"</span>: <span class="string">"String | null"</span>
+}</div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 201 Created</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Usuario creado"</span>,
+  <span class="key">"user"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+    <span class="key">"email"</span>: <span class="string">"String"</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/login</span>
+        <span class="endpoint-desc">Iniciar sesión y obtener token JWT</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body</div>
+            <div class="contract-code">{
+  <span class="key">"email"</span>: <span class="string">"String"</span>,
+  <span class="key">"password"</span>: <span class="string">"String"</span>
+}</div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"token"</span>: <span class="string">"String (JWT)"</span>,
+  <span class="key">"user"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+    <span class="key">"email"</span>: <span class="string">"String"</span>,
+    <span class="key">"foto_url"</span>: <span class="string">"String | null"</span>
+  }
+}
+<span class="comment">// Sin campo "role" — modelo C2C</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USUARIOS -->
+  <div class="api-group">
+    <div class="api-group-title">👤 Usuarios</div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/users/:id</span>
+        <span class="endpoint-desc">Obtener perfil de un usuario</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — headers</div>
+            <div class="contract-code">{
+  <span class="key">"Authorization"</span>: <span class="string">"Bearer &lt;token&gt;"</span>
+}
+<span class="comment">// params: id (Number)</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"id"</span>: <span class="number">Number</span>,
+  <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+  <span class="key">"email"</span>: <span class="string">"String"</span>,
+  <span class="key">"foto_url"</span>: <span class="string">"String | null"</span>,
+  <span class="key">"bio"</span>: <span class="string">"String | null"</span>,
+  <span class="key">"created_at"</span>: <span class="string">"Date"</span>
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method PUT">PUT</span>
+        <span class="endpoint-path">/api/users/:id</span>
+        <span class="endpoint-desc">Actualizar perfil del usuario autenticado</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body + headers</div>
+            <div class="contract-code">{
+  <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+  <span class="key">"bio"</span>: <span class="string">"String | null"</span>,
+  <span class="key">"foto_url"</span>: <span class="string">"String | null"</span>
+}
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Perfil actualizado"</span>,
+  <span class="key">"user"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+    <span class="key">"bio"</span>: <span class="string">"String | null"</span>,
+    <span class="key">"foto_url"</span>: <span class="string">"String | null"</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLICACIONES (C2C - cualquier usuario) -->
+  <div class="api-group">
+    <div class="api-group-title">☕ Publicaciones <span style="font-size:10px; background:#111; color:#fff; padding:2px 8px; letter-spacing:1px; vertical-align:middle; margin-left:6px;">Cualquier usuario autenticado</span></div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/publications</span>
+        <span class="endpoint-desc">Obtener todas las publicaciones (galería de cafés)</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — query params (opcionales)</div>
+            <div class="contract-code">?tipo_molienda=<span class="string">"en grano"</span>
+?search=<span class="string">"sidama"</span>
+?page=<span class="number">1</span>&amp;limit=<span class="number">12</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">[
+  {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+    <span class="key">"precio"</span>: <span class="number">Number</span>,
+    <span class="key">"tipo_molienda"</span>: <span class="string">"String"</span>,
+    <span class="key">"origen_pais"</span>: <span class="string">"String"</span>,
+    <span class="key">"imagen_url"</span>: <span class="string">"String"</span>,
+    <span class="key">"vendedor"</span>: {
+      <span class="key">"id"</span>: <span class="number">Number</span>,
+      <span class="key">"nombre"</span>: <span class="string">"String"</span>
+    }
+  }
+]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/publications/:id</span>
+        <span class="endpoint-desc">Obtener detalle de una publicación</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: id (Number)</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"id"</span>: <span class="number">Number</span>,
+  <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+  <span class="key">"descripcion"</span>: <span class="string">"String"</span>,
+  <span class="key">"precio"</span>: <span class="number">Number</span>,
+  <span class="key">"tipo_molienda"</span>: <span class="string">"String"</span>,
+  <span class="key">"tipo_tueste"</span>: <span class="string">"String"</span>,
+  <span class="key">"origen_pais"</span>: <span class="string">"String"</span>,
+  <span class="key">"origen_region"</span>: <span class="string">"String"</span>,
+  <span class="key">"imagen_url"</span>: <span class="string">"String"</span>,
+  <span class="key">"stock"</span>: <span class="number">Number</span>,
+  <span class="key">"created_at"</span>: <span class="string">"Date"</span>,
+  <span class="key">"vendedor"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"nombre"</span>: <span class="string">"String"</span>,
+    <span class="key">"foto_url"</span>: <span class="string">"String"</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/users/:id/publications</span>
+        <span class="endpoint-desc">Obtener publicaciones propias del usuario autenticado</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: id del usuario</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// Backend valida token.id === params.id</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">[
+  {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+    <span class="key">"precio"</span>: <span class="number">Number</span>,
+    <span class="key">"stock"</span>: <span class="number">Number</span>,
+    <span class="key">"created_at"</span>: <span class="string">"Date"</span>
+  }
+]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/publications</span>
+        <span class="endpoint-desc">Crear nueva publicación (el usuario autenticado es el vendedor)</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body (multipart/form-data)</div>
+            <div class="contract-code">{
+  <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+  <span class="key">"descripcion"</span>: <span class="string">"String"</span>,
+  <span class="key">"precio"</span>: <span class="number">Number</span>,
+  <span class="key">"tipo_molienda"</span>: <span class="string">"String"</span>,
+  <span class="key">"tipo_tueste"</span>: <span class="string">"String"</span>,
+  <span class="key">"origen_pais"</span>: <span class="string">"String"</span>,
+  <span class="key">"origen_region"</span>: <span class="string">"String"</span>,
+  <span class="key">"stock"</span>: <span class="number">Number</span>,
+  <span class="key">"imagen"</span>: <span class="string">File</span>
+}
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// user_id se extrae del token (no en body)</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 201 Created</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Publicación creada"</span>,
+  <span class="key">"publication"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+    <span class="key">"precio"</span>: <span class="number">Number</span>,
+    <span class="key">"user_id"</span>: <span class="number">Number</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method PUT">PUT</span>
+        <span class="endpoint-path">/api/publications/:id</span>
+        <span class="endpoint-desc">Editar publicación propia</span>
+        <span class="lock-badge">🔒 Privado</span>
+        <span class="owner-badge">Solo propietario</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body</div>
+            <div class="contract-code">{
+  <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+  <span class="key">"descripcion"</span>: <span class="string">"String"</span>,
+  <span class="key">"precio"</span>: <span class="number">Number</span>,
+  <span class="key">"stock"</span>: <span class="number">Number</span>,
+  <span class="key">"tipo_molienda"</span>: <span class="string">"String"</span>
+}
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// Backend: WHERE id=:id AND user_id=token.id</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Publicación actualizada"</span>,
+  <span class="key">"publication"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+    <span class="key">"precio"</span>: <span class="number">Number</span>,
+    <span class="key">"stock"</span>: <span class="number">Number</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method DELETE">DELETE</span>
+        <span class="endpoint-path">/api/publications/:id</span>
+        <span class="endpoint-desc">Eliminar publicación propia</span>
+        <span class="lock-badge">🔒 Privado</span>
+        <span class="owner-badge">Solo propietario</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: id (Number)</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// Backend: WHERE id=:id AND user_id=token.id</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Publicación eliminada"</span>
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAVORITOS -->
+  <div class="api-group">
+    <div class="api-group-title">❤️ Favoritos</div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/favorites</span>
+        <span class="endpoint-desc">Obtener publicaciones favoritas del usuario autenticado</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// user_id se extrae del token</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">[
+  {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+    <span class="key">"precio"</span>: <span class="number">Number</span>,
+    <span class="key">"imagen_url"</span>: <span class="string">"String"</span>,
+    <span class="key">"vendedor"</span>: {
+      <span class="key">"id"</span>: <span class="number">Number</span>,
+      <span class="key">"nombre"</span>: <span class="string">"String"</span>
+    }
+  }
+]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/favorites/:publication_id</span>
+        <span class="endpoint-desc">Agregar publicación a favoritos</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: publication_id (Number)</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 201 Created</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Agregado a favoritos"</span>,
+  <span class="key">"favorite"</span>: {
+    <span class="key">"user_id"</span>: <span class="number">Number</span>,
+    <span class="key">"publication_id"</span>: <span class="number">Number</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method DELETE">DELETE</span>
+        <span class="endpoint-path">/api/favorites/:publication_id</span>
+        <span class="endpoint-desc">Eliminar publicación de favoritos</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: publication_id (Number)</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Eliminado de favoritos"</span>
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEDIDOS -->
+  <div class="api-group">
+    <div class="api-group-title">📦 Pedidos</div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method POST">POST</span>
+        <span class="endpoint-path">/api/orders</span>
+        <span class="endpoint-desc">Crear pedido desde el carrito (checkout)</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST — body</div>
+            <div class="contract-code">{
+  <span class="key">"direccion"</span>: <span class="string">"String"</span>,
+  <span class="key">"items"</span>: [
+    {
+      <span class="key">"publication_id"</span>: <span class="number">Number</span>,
+      <span class="key">"cantidad"</span>: <span class="number">Number</span>
+    }
+  ]
+}
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// Backend valida que ningún ítem</span>
+<span class="comment">// pertenezca al propio usuario</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 201 Created</div>
+            <div class="contract-code">{
+  <span class="key">"message"</span>: <span class="string">"Pedido creado"</span>,
+  <span class="key">"order"</span>: {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"buyer_id"</span>: <span class="number">Number</span>,
+    <span class="key">"total"</span>: <span class="number">Number</span>,
+    <span class="key">"estado"</span>: <span class="string">"pendiente"</span>,
+    <span class="key">"created_at"</span>: <span class="string">"Date"</span>
+  }
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/orders</span>
+        <span class="endpoint-desc">Obtener historial de pedidos del usuario autenticado</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// Authorization: Bearer &lt;token&gt;</span>
+<span class="comment">// buyer_id se extrae del token</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">[
+  {
+    <span class="key">"id"</span>: <span class="number">Number</span>,
+    <span class="key">"total"</span>: <span class="number">Number</span>,
+    <span class="key">"estado"</span>: <span class="string">"String"</span>,
+    <span class="key">"created_at"</span>: <span class="string">"Date"</span>,
+    <span class="key">"items_count"</span>: <span class="number">Number</span>
+  }
+]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-header">
+        <span class="method GET">GET</span>
+        <span class="endpoint-path">/api/orders/:id</span>
+        <span class="endpoint-desc">Obtener detalle de un pedido con sus ítems</span>
+        <span class="lock-badge">🔒 Privado</span>
+      </div>
+      <div class="endpoint-body">
+        <div class="contract-grid">
+          <div class="contract-box">
+            <div class="contract-label">REQUEST</div>
+            <div class="contract-code"><span class="comment">// params: id del pedido (Number)</span>
+<span class="comment">// Authorization: Bearer &lt;token&gt;</span></div>
+          </div>
+          <div class="contract-box">
+            <div class="contract-label">RESPONSE — 200 OK</div>
+            <div class="contract-code">{
+  <span class="key">"id"</span>: <span class="number">Number</span>,
+  <span class="key">"total"</span>: <span class="number">Number</span>,
+  <span class="key">"estado"</span>: <span class="string">"String"</span>,
+  <span class="key">"direccion"</span>: <span class="string">"String"</span>,
+  <span class="key">"created_at"</span>: <span class="string">"Date"</span>,
+  <span class="key">"items"</span>: [
+    {
+      <span class="key">"publication_id"</span>: <span class="number">Number</span>,
+      <span class="key">"titulo"</span>: <span class="string">"String"</span>,
+      <span class="key">"cantidad"</span>: <span class="number">Number</span>,
+      <span class="key">"precio_unitario"</span>: <span class="number">Number</span>
+    }
+  ]
+}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align:center; margin-top:10px; font-size:12px; color:#888;">
+  Hito 1 — MktCafé Marketplace · Proyecto Final Desafío Latam Full Stack + React
+</div>
+
+</body>
+</html>

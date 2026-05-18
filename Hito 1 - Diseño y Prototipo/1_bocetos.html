@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bocetos — MktCafé</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f4f4;
+      color: #111;
+      padding: 40px 20px;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      text-align: center;
+      padding: 60px 0 50px;
+    }
+    .cover-tag {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 10px;
+    }
+    .cover h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px;
+      font-weight: 900;
+      color: #111;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 6px;
+    }
+    .cover-sub {
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #bbb;
+      margin-bottom: 30px;
+    }
+    .cover-divider {
+      width: 40px; height: 2px;
+      background: #111;
+      margin: 0 auto;
+    }
+
+    /* ── Screen wrapper ── */
+    .screen-wrap {
+      max-width: 780px;
+      margin: 0 auto 70px auto;
+    }
+    .screen-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .screen-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      color: #bbb;
+      letter-spacing: 2px;
+    }
+    .screen-name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #111;
+    }
+    .badge {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+    }
+    .badge-pub  { background: #111; color: #fff; }
+    .badge-priv { background: #fff; color: #111; border: 1px solid #111; }
+    .screen-line {
+      flex: 1; height: 1px; background: #ddd;
+    }
+
+    /* ── Frame ── */
+    .frame {
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+
+    /* ── Navbar ── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid #eee;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #111;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+    .nav-links span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #999;
+      font-weight: 500;
+    }
+    .nav-links span.active { color: #111; border-bottom: 1px solid #111; padding-bottom: 2px; }
+    .nav-cta {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: #111;
+      color: #fff;
+      padding: 8px 20px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: #111;
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.02) 0px,
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+    }
+    .hero-tag {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .hero p {
+      font-size: 13px;
+      color: #888;
+      max-width: 400px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+      position: relative;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      position: relative;
+    }
+    .btn-white {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: #fff;
+      color: #111;
+      padding: 12px 28px;
+      font-weight: 600;
+    }
+    .btn-outline-white {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: transparent;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 12px 28px;
+      font-weight: 500;
+    }
+
+    /* ── White section ── */
+    .section-white { padding: 52px 40px; background: #fff; }
+    .section-dark  { padding: 52px 40px; background: #111; }
+
+    .section-tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #bbb;
+      margin-bottom: 8px;
+    }
+    .section-dark .section-tag { color: #555; }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    .section-dark .section-title { color: #fff; }
+
+    .section-div {
+      width: 32px; height: 1px;
+      background: #ddd;
+      margin: 14px 0 24px;
+    }
+    .section-dark .section-div { background: #444; }
+
+    /* ── Category pills ── */
+    .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .pill {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border: 1px solid #ddd;
+      color: #999;
+      font-weight: 500;
+    }
+    .pill.active { background: #111; color: #fff; border-color: #111; }
+
+    /* ── Product grid ── */
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+    .product-card { cursor: pointer; }
+    .product-img {
+      background: #f4f4f4;
+      border: 1px solid #eee;
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #ccc;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .product-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 8px,
+        rgba(0,0,0,0.03) 8px,
+        rgba(0,0,0,0.03) 9px
+      );
+    }
+    .product-cat {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: #bbb;
+      margin-bottom: 4px;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 700;
+      color: #111; margin-bottom: 4px;
+    }
+    .product-price {
+      font-size: 12px; color: #111;
+      font-weight: 600; margin-bottom: 4px;
+    }
+    .product-seller { font-size: 10px; color: #bbb; }
+    .product-actions {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+    .act-btn {
+      font-size: 9px; letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      color: #111; font-weight: 500;
+    }
+    .act-btn.dark { background: #111; color: #fff; border-color: #111; }
+
+    /* ── Dark product cards ── */
+    .product-card-dark .product-img { background: #1a1a1a; border-color: #222; }
+    .product-card-dark .product-cat { color: #555; }
+    .product-card-dark .product-name { color: #fff; }
+    .product-card-dark .product-price { color: #fff; }
+    .product-card-dark .product-seller { color: #555; }
+    .product-card-dark .act-btn { border-color: #333; color: #fff; }
+    .product-card-dark .act-btn.dark { background: #fff; color: #111; }
+
+    /* ── Footer ── */
+    .footer-bar {
+      background: #111;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; color: #fff; font-weight: 700;
+    }
+    .footer-copy { font-size: 10px; color: #444; letter-spacing: 1px; }
+
+    /* ── Forms ── */
+    .form-wrap { padding: 60px 120px; }
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px; font-weight: 700;
+      color: #111; margin-bottom: 6px; text-align: center;
+      letter-spacing: -0.5px;
+    }
+    .form-sub {
+      font-size: 11px; color: #bbb;
+      text-align: center; letter-spacing: 1px;
+      margin-bottom: 36px; text-transform: uppercase;
+    }
+    .form-div {
+      width: 32px; height: 1px; background: #111;
+      margin: 0 auto 32px;
+    }
+    .fgroup { margin-bottom: 20px; }
+    .flabel {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: #999;
+      display: block; margin-bottom: 6px; font-weight: 600;
+    }
+    .finput {
+      width: 100%; height: 42px;
+      border: 0; border-bottom: 1px solid #ddd;
+      background: transparent;
+      font-size: 12px; color: #bbb;
+      padding: 0 2px;
+      display: flex; align-items: center;
+    }
+    .ftextarea {
+      width: 100%;
+      border: 0; border-bottom: 1px solid #ddd;
+      background: transparent;
+      font-size: 12px; color: #bbb;
+      padding: 8px 2px;
+      height: 80px;
+      resize: none;
+    }
+    .fupload {
+      border: 1px dashed #ddd;
+      height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #ccc; letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .fbtn {
+      width: 100%; background: #111; color: #fff;
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 16px; text-align: center;
+      margin-top: 24px; font-weight: 600;
+    }
+    .fbtn-outline {
+      width: 100%; background: #fff; color: #111;
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 16px; text-align: center;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+    }
+    .flink {
+      text-align: center; font-size: 11px;
+      color: #bbb; margin-top: 20px;
+    }
+    .flink span { color: #111; text-decoration: underline; font-weight: 500; }
+
+    /* ── Profile ── */
+    .profile-header-bar {
+      background: #111;
+      padding: 36px 40px;
+      display: flex; align-items: center; gap: 24px;
+    }
+    .avatar {
+      width: 72px; height: 72px;
+      background: #333;
+      border: 1px solid #444;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; color: #fff;
+      flex-shrink: 0;
+    }
+    .profile-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: #fff;
+      margin-bottom: 4px;
+    }
+    .profile-email { font-size: 11px; color: #555; margin-bottom: 4px; }
+    .profile-bio { font-size: 11px; color: #777; margin-bottom: 10px; }
+    .profile-edit-btn {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: #fff;
+      border: 1px solid #444; padding: 5px 14px;
+      display: inline-block;
+    }
+    .tabs-bar {
+      display: flex; border-bottom: 1px solid #eee;
+      padding: 0 40px;
+    }
+    .tab {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: #bbb;
+      padding: 16px 0; margin-right: 32px;
+      font-weight: 500;
+    }
+    .tab.active {
+      color: #111;
+      border-bottom: 2px solid #111;
+      margin-bottom: -1px;
+    }
+
+    /* ── Search bar ── */
+    .search-bar {
+      padding: 16px 40px;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      display: flex; gap: 12px; align-items: center;
+    }
+    .search-input {
+      flex: 1; height: 38px;
+      border: 1px solid #eee; background: #fff;
+      font-size: 11px; color: #ccc;
+      padding: 0 14px; letter-spacing: 0.5px;
+      display: flex; align-items: center;
+    }
+    .filter-chip {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid #ddd; color: #999;
+      padding: 8px 14px; font-weight: 500;
+    }
+
+    /* ── Detail ── */
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 45% 55%;
+    }
+    .detail-gallery { border-right: 1px solid #eee; }
+    .main-img {
+      background: #f4f4f4;
+      height: 260px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #ccc; letter-spacing: 2px;
+      position: relative; overflow: hidden;
+    }
+    .main-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 10px,
+        rgba(0,0,0,0.025) 10px, rgba(0,0,0,0.025) 11px
+      );
+    }
+    .thumb-row {
+      display: flex; gap: 8px; padding: 12px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .thumb {
+      width: 56px; height: 44px;
+      background: #ebebeb;
+      border: 1px solid #e0e0e0;
+    }
+    .thumb.active { border-color: #111; }
+    .detail-info { padding: 32px 28px; }
+    .detail-cat {
+      font-size: 9px; letter-spacing: 3px;
+      text-transform: uppercase; color: #bbb;
+      margin-bottom: 10px;
+    }
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700;
+      color: #111; line-height: 1.2;
+      margin-bottom: 14px; letter-spacing: -0.5px;
+    }
+    .detail-price {
+      font-size: 20px; font-weight: 700;
+      color: #111; margin-bottom: 6px;
+    }
+    .detail-meta {
+      font-size: 10px; color: #bbb;
+      letter-spacing: 1px; margin-bottom: 16px;
+    }
+    .detail-div { width: 100%; height: 1px; background: #f0f0f0; margin-bottom: 16px; }
+    .detail-desc {
+      font-size: 12px; color: #777;
+      line-height: 1.8; margin-bottom: 20px;
+    }
+    .map-box {
+      background: #f4f4f4;
+      border: 1px solid #eee;
+      height: 80px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: #bbb; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 16px;
+    }
+    .seller-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px;
+      border: 1px solid #eee;
+      margin-bottom: 14px;
+    }
+    .seller-avatar {
+      width: 36px; height: 36px;
+      background: #eee;
+    }
+    .seller-name-txt {
+      font-size: 13px; font-weight: 600; color: #111;
+    }
+    .seller-label-txt { font-size: 10px; color: #bbb; }
+    .action-row { display: flex; flex-direction: column; gap: 8px; }
+    .btn-full-dark {
+      background: #111; color: #fff;
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; padding: 14px;
+      text-align: center; font-weight: 600;
+    }
+    .btn-full-outline {
+      background: #fff; color: #111;
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase; padding: 14px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    /* ── Divider between screens ── */
+    .screen-divider {
+      max-width: 780px; margin: 0 auto 60px;
+      text-align: center;
+    }
+    .screen-divider hr { border: none; border-top: 1px dashed #ccc; }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      padding: 12px 40px;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      font-size: 10px; color: #bbb;
+      letter-spacing: 1px;
+    }
+
+    /* ── Form grid ── */
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  </style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-tag">★ Proyecto Final · Desafío Latam · Hito 1 ★</div>
+  <h1>MktCafé</h1>
+  <div class="cover-sub">Design &nbsp;|&nbsp; Bocetos de Vistas &nbsp;|&nbsp; 2024</div>
+  <div class="cover-divider"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 1 — PÁGINA PRINCIPAL             -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">01 —</span>
+    <span class="screen-name">Página Principal</span>
+    <span class="badge badge-pub">Pública</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <!-- Navbar -->
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links">
+        <span>Home</span>
+        <span>Tienda</span>
+        <span>Nosotros</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 16px; border:1px solid #ddd;">Registrarse</span>
+        <div class="nav-cta">Iniciar sesión</div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-tag"> &nbsp; COSECHA EN ALTURA &nbsp; </div>
+      <h2>Del productor<br>a tu taza.</h2>
+      <p>Café de espcialidad.</p>
+      <div class="hero-btns">
+        <div class="btn-white">Explorar cafés</div>
+      </div>
+    </div>
+
+    <!-- Section: intro -->
+    <div class="section-white" style="text-align:center; padding: 56px 80px;">
+      <div class="section-tag">Lo que ofrecemos</div>
+      <div class="section-title" style="font-size:26px;">Café directo del origen.</div>
+      <div class="section-div" style="margin: 14px auto 20px;"></div>
+      <p style="font-size:12px; color:#999; line-height:1.8; max-width:480px; margin:0 auto;">
+        Encuentra variedades únicas de café en grano entero, molienda gruesa, media o fina. Tueste medio o italiano.
+        Compra, vende y conecta con la comunidad cafetera de Chile.
+      </p>
+      <!-- Feature icons -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:40px;">
+        <div style="text-align:center;">
+          <div style="font-size:28px; margin-bottom:10px;">☕</div>
+          <div style="width:24px; height:1px; background:#ddd; margin:0 auto 8px;"></div>
+          <div style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#999;">En Grano</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; margin-bottom:10px;">⚗️</div>
+          <div style="width:24px; height:1px; background:#ddd; margin:0 auto 8px;"></div>
+          <div style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#999;">Molienda</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; margin-bottom:10px;">🔥</div>
+          <div style="width:24px; height:1px; background:#ddd; margin:0 auto 8px;"></div>
+          <div style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#999;">Tueste Medio</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:28px; margin-bottom:10px;">🌑</div>
+          <div style="width:24px; height:1px; background:#ddd; margin:0 auto 8px;"></div>
+          <div style="font-size:9px; letter-spacing:3px; text-transform:uppercase; color:#999;">Tueste Italiano</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: dark — Categorías + destacados -->
+    <div class="section-dark">
+      <div style="display:grid; grid-template-columns:220px 1fr; gap:40px; align-items:start;">
+        <div>
+          <div class="section-tag">Marketplace</div>
+          <div class="section-title" style="font-size:22px; line-height:1.3;">Publicaciones<br>destacadas</div>
+          <div class="section-div"></div>
+          <p style="font-size:11px; color:#555; line-height:1.8; margin-bottom:20px;">
+            Descubre los mejores cafés publicados por vendedores verificados de toda Chile.
+          </p>
+          <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#fff; border:1px solid #444; padding:10px 18px; display:inline-block;">Ver todos</div>
+        </div>
+        <div class="grid-3">
+          <div class="product-card product-card-dark">
+            <div class="product-img">[ IMAGEN ]</div>
+            <div class="product-cat">Grano Entero · Tueste Medio</div>
+            <div class="product-name">Tierra de los Incas</div>
+            <div class="product-price">$9.990</div>
+            <div class="product-seller">Origen: Perú (Cuenca Central)</div>
+          </div>
+          <div class="product-card product-card-dark">
+            <div class="product-img">[ IMAGEN ]</div>
+            <div class="product-cat">Grano Entero · Tueste Italiano</div>
+            <div class="product-name">Tierra de Volcanes</div>
+            <div class="product-price">$10.500</div>
+            <div class="product-seller">Origen: El Salvador</div>
+          </div>
+          <div class="product-card product-card-dark">
+            <div class="product-img">[ IMAGEN ]</div>
+            <div class="product-cat">Molienda Media · Tueste Medio</div>
+            <div class="product-name">País Cafetero</div>
+            <div class="product-price">$8.500</div>
+            <div class="product-seller">Origen: Colombia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="section-white" style="text-align:center; padding:56px 120px;">
+      <p style="font-style:italic; font-size:14px; color:#777; line-height:2; max-width:480px; margin:0 auto 12px;">
+        "El café no es solo una bebida, es un puente entre culturas, personas y momentos únicos."
+      </p>
+      <div style="font-size:10px; letter-spacing:2px; color:#ccc; text-transform:uppercase;">— MktCafé</div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 2 — REGISTRO                     -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">02 —</span>
+    <span class="screen-name">Registro de Usuarios</span>
+    <span class="badge badge-pub">Pública</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links"><span>← Volver al inicio</span></div>
+      <div></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; min-height:460px;">
+      <!-- Left: dark panel -->
+      <div class="hero" style="padding:60px 40px; text-align:left; justify-content:flex-start; display:flex; flex-direction:column;">
+        <div class="hero-tag" style="margin-bottom:30px; text-align:left;">★ &nbsp; Únete a la comunidad &nbsp; ★</div>
+        <h2 style="font-size:36px; margin-bottom:16px; letter-spacing:-1px;">Comienza tu<br>viaje cafetalero.</h2>
+        <p style="font-size:12px; color:#666; line-height:1.8;">
+          Crea tu cuenta gratis y empieza a comprar o vender café artesanal de todo Chile.
+        </p>
+      </div>
+      <!-- Right: form -->
+      <div style="padding:48px 48px; background:#fff;">
+        <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:8px;">Nueva cuenta</div>
+        <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#111; margin-bottom:28px;">Regístrate</div>
+        <div class="fgroup"><div class="flabel">Nombre completo</div><div class="finput">Ej: María González</div></div>
+        <div class="fgroup"><div class="flabel">Correo electrónico</div><div class="finput">ejemplo@correo.com</div></div>
+        <div class="fgroup"><div class="flabel">Contraseña</div><div class="finput">••••••••</div></div>
+        <div class="fgroup"><div class="flabel">Confirmar contraseña</div><div class="finput">••••••••</div></div>
+        <div class="fgroup"><div class="flabel">Foto de perfil (opcional)</div><div class="fupload">+ Subir imagen</div></div>
+        <div class="fbtn">Crear cuenta</div>
+        <div class="flink">¿Ya tienes cuenta? <span>Iniciar sesión</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 3 — INICIO DE SESIÓN             -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">03 —</span>
+    <span class="screen-name">Inicio de Sesión</span>
+    <span class="badge badge-pub">Pública</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links"><span>← Volver al inicio</span></div>
+      <div></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; min-height:380px;">
+      <div class="hero" style="padding:60px 40px; text-align:left; display:flex; flex-direction:column;">
+        <div class="hero-tag" style="text-align:left; margin-bottom:24px;">★ &nbsp; Bienvenido de vuelta &nbsp; ★</div>
+        <h2 style="font-size:36px; letter-spacing:-1px; margin-bottom:16px;">Tu café<br>te espera.</h2>
+        <p style="font-size:12px; color:#666; line-height:1.8;">Ingresa a tu cuenta y continúa explorando el mejor café artesanal de Chile.</p>
+      </div>
+      <div style="padding:60px 48px; background:#fff;">
+        <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:8px;">Tu cuenta</div>
+        <div style="font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#111; margin-bottom:32px;">Iniciar Sesión</div>
+        <div class="fgroup"><div class="flabel">Correo electrónico</div><div class="finput">ejemplo@correo.com</div></div>
+        <div class="fgroup"><div class="flabel">Contraseña</div><div class="finput">••••••••</div></div>
+        <div style="text-align:right; font-size:10px; color:#bbb; margin-bottom:24px; letter-spacing:1px;">¿Olvidaste tu contraseña?</div>
+        <div class="fbtn">Ingresar</div>
+        <div class="flink">¿No tienes cuenta? <span>Regístrate gratis</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 4 — MI PERFIL                    -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">04 —</span>
+    <span class="screen-name">Mi Perfil</span>
+    <span class="badge badge-priv">Privada</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links">
+        <span>Tienda</span>
+        <span class="active">Mi Perfil</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <div class="nav-cta">+ Publicar</div>
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+      </div>
+    </div>
+    <!-- Profile header dark -->
+    <div class="profile-header-bar">
+      <div class="avatar">MG</div>
+      <div>
+        <div class="profile-name">María González</div>
+        <div class="profile-email">maria@correo.com</div>
+        <div class="profile-bio">Amante del café de especialidad · Santiago, Chile</div>
+        <div class="profile-edit-btn">✏ Editar perfil</div>
+      </div>
+      <div style="margin-left:auto; text-align:right;">
+        <div style="font-size:22px; font-family:'Playfair Display',serif; font-weight:700; color:#fff;">3</div>
+        <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#555;">Publicaciones</div>
+      </div>
+      <div style="margin-left:32px; text-align:right;">
+        <div style="font-size:22px; font-family:'Playfair Display',serif; font-weight:700; color:#fff;">8</div>
+        <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#555;">Pedidos</div>
+      </div>
+      <div style="margin-left:32px; text-align:right;">
+        <div style="font-size:22px; font-family:'Playfair Display',serif; font-weight:700; color:#fff;">5</div>
+        <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#555;">Favoritos</div>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <div class="tab active">Mis publicaciones</div>
+      <div class="tab">Mis pedidos</div>
+      <div class="tab">Mis favoritos</div>
+    </div>
+    <!-- Content -->
+    <div style="padding:32px 40px;">
+      <div class="grid-3">
+        <div class="product-card">
+          <div class="product-img" style="height:110px;">[ IMAGEN ]</div>
+          <div class="product-cat">Grano Entero · Tueste Medio</div>
+          <div class="product-name">Tierra de los Incas</div>
+          <div class="product-price">$9.990</div>
+          <div class="product-actions">
+            <div class="act-btn dark">✏ Editar</div>
+            <div class="act-btn">🗑 Eliminar</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img" style="height:110px;">[ IMAGEN ]</div>
+          <div class="product-cat">Molienda Fina · Tueste Medio</div>
+          <div class="product-name">Sidama</div>
+          <div class="product-price">$11.500</div>
+          <div class="product-actions">
+            <div class="act-btn dark">✏ Editar</div>
+            <div class="act-btn">🗑 Eliminar</div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-img" style="height:110px;">[ IMAGEN ]</div>
+          <div class="product-cat">Grano Entero · Tueste Italiano</div>
+          <div class="product-name">Amazonía Alta</div>
+          <div class="product-price">$9.200</div>
+          <div class="product-actions">
+            <div class="act-btn dark">✏ Editar</div>
+            <div class="act-btn">🗑 Eliminar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 5 — CREAR PUBLICACIÓN            -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">05 —</span>
+    <span class="screen-name">Crear Publicación</span>
+    <span class="badge badge-priv">Privada · Cualquier usuario</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links"><span>Tienda</span><span class="active">+ Publicar</span><span>Mi Perfil</span></div>
+      <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+    </div>
+    <div style="padding:48px 60px;">
+      <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:6px;">Nueva publicación</div>
+      <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:#111; margin-bottom:4px; letter-spacing:-0.5px;">Publica tu café</div>
+      <div style="width:32px; height:1px; background:#111; margin:14px 0 32px;"></div>
+
+      <div class="form-grid-2">
+        <div class="fgroup"><div class="flabel">Nombre de la variedad *</div><div class="finput">Ej: Tierra de los Incas, Sidama...</div></div>
+        <div class="fgroup"><div class="flabel">Precio por 250g (CLP) *</div><div class="finput">Ej: 9.990</div></div>
+        <div class="fgroup"><div class="flabel">Tipo de molienda *</div><div class="finput">▼ Grano Entero / Gruesa / Media / Fina</div></div>
+        <div class="fgroup"><div class="flabel">Tipo de tueste *</div><div class="finput">▼ Tueste Medio / Tueste Italiano</div></div>
+        <div class="fgroup"><div class="flabel">País de origen *</div><div class="finput">Ej: Perú, Colombia, Etiopía...</div></div>
+        <div class="fgroup"><div class="flabel">Región de origen</div><div class="finput">Ej: Cuenca Central, Sidama...</div></div>
+      </div>
+
+      <div class="fgroup" style="margin-top:4px;">
+        <div class="flabel">Descripción *</div>
+        <div class="ftextarea">Describe el perfil de sabor, notas de cata, proceso, altura de cultivo, gramaje disponible...</div>
+      </div>
+
+      <div class="fgroup">
+        <div class="flabel">Imágenes del producto *</div>
+        <div class="fupload" style="height:90px; flex-direction:column; gap:6px;">
+          <span style="font-size:20px;">+</span>
+          <span>Arrastra imágenes aquí o haz clic (máx. 3)</span>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px;">
+        <div class="fbtn-outline">Cancelar</div>
+        <div class="fbtn" style="margin-top:0;">Publicar producto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 6 — GALERÍA / TIENDA             -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">06 —</span>
+    <span class="screen-name">Galería de Publicaciones</span>
+    <span class="badge badge-priv">Privada</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links"><span class="active">Tienda</span><span>Mi Perfil</span></div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div class="nav-cta">+ Publicar</div>
+        <span style="position:relative; font-size:16px; cursor:pointer;">🛍️<span style="position:absolute; top:-4px; right:-7px; font-size:9px; background:#111; color:#fff; border-radius:50%; width:15px; height:15px; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">0</span></span>
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+      </div>
+    </div>
+    <div class="search-bar">
+      <div class="search-input">🔍 &nbsp; Buscar por nombre, tipo, origen...</div>
+      <div class="filter-chip">Categoría ▼</div>
+      <div class="filter-chip">Precio ▼</div>
+      <div class="filter-chip">Región ▼</div>
+    </div>
+    <div style="padding: 28px 40px;">
+      <div class="pills">
+        <div class="pill active">Todos</div>
+        <div class="pill">Grano Entero</div>
+        <div class="pill">Molienda Gruesa</div>
+        <div class="pill">Molienda Media</div>
+        <div class="pill">Molienda Fina</div>
+        <div class="pill">Tueste Medio</div>
+        <div class="pill">Tueste Italiano</div>
+      </div>
+      <div style="font-size:10px; letter-spacing:1px; color:#bbb; margin-bottom:20px;">Mostrando 6 de 48 resultados</div>
+      <div class="grid-3">
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Grano Entero · Tueste Medio</div>
+          <div class="product-name">Tierra de los Incas</div>
+          <div class="product-price">$9.990</div>
+          <div class="product-seller">Origen: Perú · Cuenca Central</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Grano Entero · Tueste Italiano</div>
+          <div class="product-name">Tierra de Volcanes</div>
+          <div class="product-price">$10.500</div>
+          <div class="product-seller">Origen: El Salvador</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Molienda Media · Tueste Medio</div>
+          <div class="product-name">País Cafetero</div>
+          <div class="product-price">$8.500</div>
+          <div class="product-seller">Origen: Colombia</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Molienda Fina · Tueste Medio</div>
+          <div class="product-name">Sidama</div>
+          <div class="product-price">$11.500</div>
+          <div class="product-seller">Origen: Etiopía</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Molienda Gruesa · Tueste Italiano</div>
+          <div class="product-name">Amazonía Alta</div>
+          <div class="product-price">$9.200</div>
+          <div class="product-seller">Origen: Perú</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">[ IMAGEN ]</div>
+          <div class="product-cat">Grano Entero · Tueste Medio</div>
+          <div class="product-name">Tierra de los Incas</div>
+          <div class="product-price">$9.990</div>
+          <div class="product-seller">Origen: Perú · Cuenca Central</div>
+          <div class="product-actions"><div class="act-btn dark">Ver detalle</div><div class="act-btn">🛒</div><div class="act-btn">♡</div></div>
+        </div>
+      </div>
+      <div style="text-align:center; margin-top:32px;">
+        <div style="display:inline-block; font-size:9px; letter-spacing:3px; text-transform:uppercase; border:1px solid #ddd; padding:12px 28px; color:#999; font-weight:500;">Cargar más</div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 7 — DETALLE DE PUBLICACIÓN       -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">07 —</span>
+    <span class="screen-name">Detalle de Publicación</span>
+    <span class="badge badge-priv">Privada</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links"><span class="active">Tienda</span><span>Mi Perfil</span></div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <div class="nav-cta">+ Publicar</div>
+        <span style="position:relative; font-size:16px; cursor:pointer;">🛍️<span style="position:absolute; top:-4px; right:-7px; font-size:9px; background:#111; color:#fff; border-radius:50%; width:15px; height:15px; display:flex; align-items:center; justify-content:center; font-family:'Inter',sans-serif;">2</span></span>
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+      </div>
+    </div>
+    <div class="breadcrumb">
+      ← Tienda &nbsp;/&nbsp; Molienda Fina · Tueste Medio &nbsp;/&nbsp; <strong style="color:#111;">Sidama</strong>
+    </div>
+    <div class="detail-layout">
+      <!-- Gallery -->
+      <div class="detail-gallery">
+        <div class="main-img">[ IMAGEN PRINCIPAL ]</div>
+        <div class="thumb-row">
+          <div class="thumb active"></div>
+          <div class="thumb"></div>
+          <div class="thumb"></div>
+        </div>
+      </div>
+      <!-- Info -->
+      <div class="detail-info">
+        <div class="detail-cat">Molienda Fina &nbsp;·&nbsp; Tueste Medio</div>
+        <div class="detail-title">Sidama<br><span style="font-size:14px; font-weight:400; font-family:'Inter',sans-serif; color:#bbb;">Origen: Etiopía</span></div>
+        <div class="detail-price">$11.500 <span style="font-size:12px; font-weight:400; color:#bbb;">/ 250g</span></div>
+        <div class="detail-meta">Disponible en: Grano entero · Molienda gruesa · Media · Fina</div>
+        <div class="detail-div"></div>
+        <div class="detail-desc">
+          Café de especialidad proveniente de la región de Sidama, Etiopía.
+          Tueste medio. Notas florales, cítricos y frutos rojos.
+          Perfecto para métodos de filtro y espresso suave.
+        </div>
+        <div class="map-box">📍 &nbsp; Ubicación del vendedor &nbsp; (Google Maps)</div>
+        <div class="seller-row">
+          <div class="seller-avatar"></div>
+          <div>
+            <div class="seller-name-txt">Juan Carlos Pérez</div>
+            <div class="seller-label-txt">Vendedor · Miembro desde 2023 · ⭐ 4.8</div>
+          </div>
+        </div>
+        <!-- Selector de cantidad -->
+        <div style="display:flex; align-items:center; gap:0; margin-bottom:14px;">
+          <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#bbb; margin-right:16px;">Cantidad</span>
+          <span style="width:32px; height:32px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:15px; color:#aaa; cursor:pointer;">−</span>
+          <span style="width:44px; height:32px; border-top:1px solid #ddd; border-bottom:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:#111;">1</span>
+          <span style="width:32px; height:32px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:15px; color:#aaa; cursor:pointer;">+</span>
+          <span style="font-size:10px; color:#bbb; margin-left:12px;">Stock: 12 unidades</span>
+        </div>
+        <div class="action-row">
+          <div class="btn-full-dark">🛒 Agregar al carrito</div>
+          <div class="btn-full-outline">♡ Agregar a favoritos</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 8 — CARRITO DE COMPRA (CLIENTE)  -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">08 —</span>
+    <span class="screen-name">Carrito de Compra</span>
+    <span class="badge badge-priv">Privada · Cualquier usuario</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links">
+        <span class="active">Tienda</span>
+        <span>Mi Perfil</span>
+        <span>Mis Pedidos</span>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <span style="font-size:13px; position:relative;">🛍️ <span style="font-size:9px; background:#111; color:#fff; border-radius:50%; width:16px; height:16px; display:inline-flex; align-items:center; justify-content:center; position:absolute; top:-4px; right:-6px;">3</span></span>
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd; margin-left:12px;">Salir</span>
+      </div>
+    </div>
+
+    <div style="padding:40px 48px;">
+      <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:6px;">Resumen de compra</div>
+      <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:#111; margin-bottom:4px; letter-spacing:-0.5px;">Tu Carrito</div>
+      <div style="width:32px; height:1px; background:#111; margin:14px 0 32px;"></div>
+
+      <div style="display:grid; grid-template-columns:1fr 340px; gap:40px; align-items:start;">
+
+        <!-- Lista de items -->
+        <div>
+          <!-- Item 1 -->
+          <div style="display:flex; gap:16px; padding:20px 0; border-bottom:1px solid #f0f0f0; align-items:center;">
+            <div style="width:70px; height:70px; background:#f4f4f4; border:1px solid #eee; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; color:#ccc;">IMG</div>
+            <div style="flex:1;">
+              <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; margin-bottom:3px;">Grano Entero · Tueste Medio</div>
+              <div style="font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:#111; margin-bottom:2px;">Tierra de los Incas</div>
+              <div style="font-size:10px; color:#bbb;">Origen: Perú · 250g</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">−</span>
+              <span style="font-size:13px; font-weight:600;">2</span>
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">+</span>
+            </div>
+            <div style="font-size:14px; font-weight:700; color:#111; min-width:70px; text-align:right;">$19.980</div>
+            <div style="font-size:16px; color:#ccc; cursor:pointer; padding-left:12px;">×</div>
+          </div>
+          <!-- Item 2 -->
+          <div style="display:flex; gap:16px; padding:20px 0; border-bottom:1px solid #f0f0f0; align-items:center;">
+            <div style="width:70px; height:70px; background:#f4f4f4; border:1px solid #eee; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; color:#ccc;">IMG</div>
+            <div style="flex:1;">
+              <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; margin-bottom:3px;">Molienda Fina · Tueste Medio</div>
+              <div style="font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:#111; margin-bottom:2px;">Sidama</div>
+              <div style="font-size:10px; color:#bbb;">Origen: Etiopía · 250g</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">−</span>
+              <span style="font-size:13px; font-weight:600;">1</span>
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">+</span>
+            </div>
+            <div style="font-size:14px; font-weight:700; color:#111; min-width:70px; text-align:right;">$11.500</div>
+            <div style="font-size:16px; color:#ccc; cursor:pointer; padding-left:12px;">×</div>
+          </div>
+          <!-- Item 3 -->
+          <div style="display:flex; gap:16px; padding:20px 0; border-bottom:1px solid #f0f0f0; align-items:center;">
+            <div style="width:70px; height:70px; background:#f4f4f4; border:1px solid #eee; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:9px; color:#ccc;">IMG</div>
+            <div style="flex:1;">
+              <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; margin-bottom:3px;">Grano Entero · Tueste Italiano</div>
+              <div style="font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:#111; margin-bottom:2px;">Tierra de Volcanes</div>
+              <div style="font-size:10px; color:#bbb;">Origen: El Salvador · 250g</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">−</span>
+              <span style="font-size:13px; font-weight:600;">1</span>
+              <span style="width:26px; height:26px; border:1px solid #ddd; display:flex; align-items:center; justify-content:center; font-size:13px; color:#999;">+</span>
+            </div>
+            <div style="font-size:14px; font-weight:700; color:#111; min-width:70px; text-align:right;">$10.500</div>
+            <div style="font-size:16px; color:#ccc; cursor:pointer; padding-left:12px;">×</div>
+          </div>
+
+          <div style="padding-top:16px;">
+            <span style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; border-bottom:1px solid #ddd; padding-bottom:2px; cursor:pointer;">← Seguir comprando</span>
+          </div>
+        </div>
+
+        <!-- Resumen -->
+        <div style="background:#f9f9f9; border:1px solid #eee; padding:28px;">
+          <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:16px;">Resumen del pedido</div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#777; margin-bottom:10px;">
+            <span>Subtotal (4 productos)</span><span>$41.980</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:12px; color:#777; margin-bottom:10px;">
+            <span>Envío</span><span>$3.000</span>
+          </div>
+          <div style="height:1px; background:#eee; margin:16px 0;"></div>
+          <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700; color:#111; margin-bottom:24px;">
+            <span>Total</span><span>$44.980</span>
+          </div>
+          <div class="btn-full-dark">Proceder al pago →</div>
+          <div style="text-align:center; font-size:10px; color:#ccc; margin-top:12px; letter-spacing:1px;">Pago 100% seguro</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 9 — HISTORIAL DE PEDIDOS         -->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">09 —</span>
+    <span class="screen-name">Historial de Pedidos</span>
+    <span class="badge badge-priv">Privada · Cualquier usuario</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links">
+        <span>Tienda</span>
+        <span>Mi Perfil</span>
+        <span class="active">Mis Pedidos</span>
+      </div>
+      <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+    </div>
+
+    <div style="padding:40px 48px;">
+      <div style="font-size:10px; letter-spacing:3px; text-transform:uppercase; color:#bbb; margin-bottom:6px;">Cuenta</div>
+      <div style="font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:#111; margin-bottom:4px; letter-spacing:-0.5px;">Mis Pedidos</div>
+      <div style="width:32px; height:1px; background:#111; margin:14px 0 32px;"></div>
+
+      <!-- Filtro de estado -->
+      <div class="pills" style="margin-bottom:28px;">
+        <div class="pill active">Todos</div>
+        <div class="pill">Pendiente</div>
+        <div class="pill">En camino</div>
+        <div class="pill">Entregado</div>
+        <div class="pill">Cancelado</div>
+      </div>
+
+      <!-- Tabla de pedidos -->
+      <div style="border:1px solid #eee; overflow:hidden;">
+        <!-- Header -->
+        <div style="display:grid; grid-template-columns:120px 1fr 120px 110px 100px; background:#f9f9f9; border-bottom:1px solid #eee; padding:12px 20px; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; font-weight:600; gap:12px;">
+          <span>Nº Pedido</span><span>Productos</span><span>Total</span><span>Estado</span><span>Acciones</span>
+        </div>
+        <!-- Row 1 -->
+        <div style="display:grid; grid-template-columns:120px 1fr 120px 110px 100px; padding:16px 20px; border-bottom:1px solid #f5f5f5; align-items:center; gap:12px; font-size:12px;">
+          <span style="font-weight:600; color:#111;">#00124</span>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-weight:700; color:#111; font-size:13px;">Tierra de los Incas ×2</div>
+            <div style="font-size:10px; color:#bbb; margin-top:2px;">Sidama ×1 · 18 Abr 2024</div>
+          </div>
+          <span style="font-weight:700; color:#111;">$44.980</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#d4edda; color:#155724; padding:4px 10px; font-weight:600;">Entregado</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; padding:4px 10px; color:#111; cursor:pointer;">Ver detalle</span>
+        </div>
+        <!-- Row 2 -->
+        <div style="display:grid; grid-template-columns:120px 1fr 120px 110px 100px; padding:16px 20px; border-bottom:1px solid #f5f5f5; align-items:center; gap:12px; font-size:12px;">
+          <span style="font-weight:600; color:#111;">#00118</span>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-weight:700; color:#111; font-size:13px;">País Cafetero ×1</div>
+            <div style="font-size:10px; color:#bbb; margin-top:2px;">10 Abr 2024</div>
+          </div>
+          <span style="font-weight:700; color:#111;">$11.500</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#fff3cd; color:#856404; padding:4px 10px; font-weight:600;">En camino</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; padding:4px 10px; color:#111; cursor:pointer;">Ver detalle</span>
+        </div>
+        <!-- Row 3 -->
+        <div style="display:grid; grid-template-columns:120px 1fr 120px 110px 100px; padding:16px 20px; align-items:center; gap:12px; font-size:12px;">
+          <span style="font-weight:600; color:#111;">#00109</span>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-weight:700; color:#111; font-size:13px;">Amazonía Alta ×2</div>
+            <div style="font-size:10px; color:#bbb; margin-top:2px;">Tierra de Volcanes ×1 · 2 Abr 2024</div>
+          </div>
+          <span style="font-weight:700; color:#111;">$29.400</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#f8d7da; color:#721c24; padding:4px 10px; font-weight:600;">Cancelado</span>
+          <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; padding:4px 10px; color:#111; cursor:pointer;">Ver detalle</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<div class="screen-divider"><hr></div>
+
+<!-- ════════════════════════════════════════ -->
+<!-- VISTA 10 — MIS PUBLICACIONES (VENDEDOR)-->
+<!-- ════════════════════════════════════════ -->
+<div class="screen-wrap">
+  <div class="screen-meta">
+    <span class="screen-num">10 —</span>
+    <span class="screen-name">Mis Publicaciones (vista vendedor)</span>
+    <span class="badge badge-priv">Privada · Cualquier usuario</span>
+    <div class="screen-line"></div>
+  </div>
+  <div class="frame">
+    <div class="nav">
+      <div class="nav-logo">MktCafé</div>
+      <div class="nav-links">
+        <span>Tienda</span>
+        <span class="active">Mi Perfil</span>
+        <span>Mis Pedidos</span>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <div class="nav-cta">+ Publicar café</div>
+        <span style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#999; padding:8px 14px; border:1px solid #ddd;">Salir</span>
+      </div>
+    </div>
+
+    <!-- Profile header dark (vendedor) -->
+    <div class="profile-header-bar">
+      <div class="avatar">JC</div>
+      <div>
+        <div class="profile-name">Juan Carlos Pérez</div>
+        <div class="profile-email">juanc@correo.com</div>
+        <div class="profile-bio">Productor de café · Santiago, Chile · Vendedor verificado ✓</div>
+      </div>
+      <div style="margin-left:auto; text-align:right;">
+        <div style="font-size:22px; font-family:'Playfair Display',serif; font-weight:700; color:#fff;">3</div>
+        <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#555;">Publicaciones</div>
+      </div>
+      <div style="margin-left:32px; text-align:right;">
+        <div style="font-size:22px; font-family:'Playfair Display',serif; font-weight:700; color:#fff;">$142k</div>
+        <div style="font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#555;">Ventas totales</div>
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <div class="tab active">Mis publicaciones</div>
+      <div class="tab">Mis pedidos</div>
+      <div class="tab">Mis favoritos</div>
+    </div>
+
+    <div style="padding:28px 40px;">
+      <!-- Info C2C -->
+      <div style="background:#f9f9f9; border:1px solid #eee; padding:12px 18px; margin-bottom:24px; display:flex; align-items:center; gap:10px; font-size:11px; color:#777;">
+        <span>🔄</span>
+        <span>Como vendedor, solo puedes editar o eliminar <strong style="color:#111;">tus propias publicaciones</strong>. Los compradores son otros usuarios de la plataforma.</span>
+      </div>
+
+      <!-- Tabla de mis publicaciones -->
+      <div style="border:1px solid #eee; overflow:hidden;">
+        <div style="display:grid; grid-template-columns:60px 1fr 160px 100px 100px 130px; background:#f9f9f9; border-bottom:1px solid #eee; padding:12px 20px; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:#bbb; font-weight:600; gap:12px;">
+          <span>IMG</span><span>Producto</span><span>Molienda / Tueste</span><span>Precio</span><span>Ventas</span><span>Acciones</span>
+        </div>
+        <div style="display:grid; grid-template-columns:60px 1fr 160px 100px 100px 130px; padding:14px 20px; border-bottom:1px solid #f5f5f5; align-items:center; gap:12px;">
+          <div style="width:44px; height:44px; background:#f4f4f4; border:1px solid #eee;"></div>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-size:14px; font-weight:700; color:#111;">Tierra de los Incas</div>
+            <div style="font-size:10px; color:#bbb;">Origen: Perú · Cuenca Central</div>
+          </div>
+          <span style="font-size:11px; color:#777;">Grano Entero · Tueste Medio</span>
+          <span style="font-size:13px; font-weight:700; color:#111;">$9.990</span>
+          <span style="font-size:11px; color:#777;">24 ventas</span>
+          <div style="display:flex; gap:6px;">
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#111; color:#fff; padding:5px 10px; cursor:pointer;">Editar</span>
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; color:#c0392b; padding:5px 8px; cursor:pointer;">🗑</span>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:60px 1fr 160px 100px 100px 130px; padding:14px 20px; border-bottom:1px solid #f5f5f5; align-items:center; gap:12px;">
+          <div style="width:44px; height:44px; background:#f4f4f4; border:1px solid #eee;"></div>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-size:14px; font-weight:700; color:#111;">Sidama</div>
+            <div style="font-size:10px; color:#bbb;">Origen: Etiopía</div>
+          </div>
+          <span style="font-size:11px; color:#777;">Molienda Fina · Tueste Medio</span>
+          <span style="font-size:13px; font-weight:700; color:#111;">$11.500</span>
+          <span style="font-size:11px; color:#777;">9 ventas</span>
+          <div style="display:flex; gap:6px;">
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#111; color:#fff; padding:5px 10px; cursor:pointer;">Editar</span>
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; color:#c0392b; padding:5px 8px; cursor:pointer;">🗑</span>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:60px 1fr 160px 100px 100px 130px; padding:14px 20px; align-items:center; gap:12px;">
+          <div style="width:44px; height:44px; background:#f4f4f4; border:1px solid #eee;"></div>
+          <div>
+            <div style="font-family:'Playfair Display',serif; font-size:14px; font-weight:700; color:#111;">Amazonía Alta</div>
+            <div style="font-size:10px; color:#bbb;">Origen: Perú</div>
+          </div>
+          <span style="font-size:11px; color:#777;">Molienda Gruesa · Tueste Italiano</span>
+          <span style="font-size:13px; font-weight:700; color:#111;">$9.200</span>
+          <span style="font-size:11px; color:#777;">11 ventas</span>
+          <div style="display:flex; gap:6px;">
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; background:#111; color:#fff; padding:5px 10px; cursor:pointer;">Editar</span>
+            <span style="font-size:9px; letter-spacing:1px; text-transform:uppercase; border:1px solid #ddd; color:#c0392b; padding:5px 8px; cursor:pointer;">🗑</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <div class="footer-logo">MktCafé</div>
+      <div class="footer-copy">© 2024 · Marketplace de café artesanal</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer doc -->
+<div style="text-align:center; margin-top:20px; margin-bottom:40px; font-size:10px; color:#ccc; letter-spacing:2px; text-transform:uppercase;">
+  Hito 1 · MktCafé · Proyecto Final Desafío Latam Full Stack + React
+</div>
+
+</body>
+</html>
