@@ -1,0 +1,81 @@
+import { createContext, useContext, useState, useReducer } from 'react'
+
+// Creación del contexto del carrito
+export const CartContext = createContext()
+
+// Hook personalizado para consumir el contexto del carrito
+export const useCart = () => useContext(CartContext)
+
+// Reducer para manejar las acciones del carrito
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_ITEM': {
+      const exists = state.items.find(i => i.id === action.payload.id)
+      if (exists) {
+        return {
+          ...state,
+          items: state.items.map(i =>
+            i.id === action.payload.id
+              ? { ...i, cantidad: i.cantidad + 1 }
+              : i
+          ),
+        }
+      }
+      return {
+        ...state,
+        items: [...state.items, { ...action.payload, cantidad: 1 }],
+      }
+    }
+    case 'REMOVE_ITEM':
+      return {
+        ...state,
+        items: state.items.filter(i => i.id !== action.payload),
+      }
+    case 'UPDATE_QUANTITY':
+      return {
+        ...state,
+        items: state.items.map(i =>
+          i.id === action.payload.id
+            ? { ...i, cantidad: action.payload.cantidad }
+            : i
+        ),
+      }
+    case 'CLEAR_CART':
+      return { ...state, items: [] }
+    default:
+      return state
+  }
+}
+
+const initialState = { items: [] }
+
+export const CartProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, initialState)
+
+  const addItem = (product) => dispatch({ type: 'ADD_ITEM', payload: product })
+  const removeItem = (id) => dispatch({ type: 'REMOVE_ITEM', payload: id })
+  const updateQuantity = (id, cantidad) =>
+    dispatch({ type: 'UPDATE_QUANTITY', payload: { id, cantidad } })
+  const clearCart = () => dispatch({ type: 'CLEAR_CART' })
+
+  // Total de items en el carrito
+  const totalItems = state.items.reduce((acc, i) => acc + i.cantidad, 0)
+
+  // Total de precio
+  const totalPrice = state.items.reduce(
+    (acc, i) => acc + i.precio * i.cantidad,
+    0
+  )
+
+  const value = {
+    items: state.items,
+    totalItems,
+    totalPrice,
+    addItem,
+    removeItem,
+    updateQuantity,
+    clearCart,
+  }
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+}
