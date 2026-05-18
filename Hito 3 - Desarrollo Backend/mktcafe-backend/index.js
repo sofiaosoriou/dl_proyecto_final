@@ -57,11 +57,19 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ============================================================
 //  Rutas de la API
 // ============================================================
+// Rutas con prefijo /api (estándar)
 app.use("/api", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/favorites", favoriteRoutes);
 app.use("/api/orders", orderRoutes);
+
+// Alias sin prefijo /api (compatibilidad con frontend)
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/publications", publicationRoutes);
+app.use("/favorites", favoriteRoutes);
+app.use("/orders", orderRoutes);
 
 // Ruta raíz de bienvenida
 app.get("/", (req, res) => {
