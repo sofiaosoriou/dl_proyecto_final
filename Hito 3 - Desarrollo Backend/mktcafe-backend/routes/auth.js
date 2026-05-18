@@ -6,6 +6,48 @@ const pool = require("../db/config");
 require("dotenv").config();
 
 /**
+ * POST /auth/register
+ * Registrar nuevo usuario (alias compatible con el frontend).
+ */
+router.post("/register", async (req, res) => {
+  const { nombre, email, password, foto_url } = req.body;
+
+  if (!nombre || !email || !password) {
+    return res
+      .status(400)
+      .json({ error: "Nombre, email y contraseña son obligatorios." });
+  }
+
+  try {
+    const existing = await pool.query(
+      "SELECT id FROM users WHERE email = $1",
+      [email]
+    );
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: "El email ya está registrado." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const result = await pool.query(
+      `INSERT INTO users (nombre, email, password, foto_url)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, nombre, email`,
+      [nombre, email, hashedPassword, foto_url || null]
+    );
+
+    res.status(201).json({
+      message: "Usuario creado",
+      user: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Error al registrar usuario:", error.message);
+    res.status(500).json({ error: "Error interno del servidor." });
+  }
+});
+
+/**
  * POST /api/login
  * Autentica al usuario y retorna un token JWT.
  */
