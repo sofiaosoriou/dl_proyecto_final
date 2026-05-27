@@ -1,10 +1,21 @@
-import { createContext, useContext, useState, useReducer } from 'react'
+import { createContext, useContext, useState, useReducer, useEffect } from 'react'
 
 // Creación del contexto del carrito
 export const CartContext = createContext()
 
 // Hook personalizado para consumir el contexto del carrito
 export const useCart = () => useContext(CartContext)
+
+const CART_STORAGE_KEY = 'mktcafe_cart'
+
+const loadCartFromStorage = () => {
+  try {
+    const saved = localStorage.getItem(CART_STORAGE_KEY)
+    return saved ? JSON.parse(saved) : []
+  } catch {
+    return []
+  }
+}
 
 // Reducer para manejar las acciones del carrito
 const cartReducer = (state, action) => {
@@ -47,10 +58,15 @@ const cartReducer = (state, action) => {
   }
 }
 
-const initialState = { items: [] }
+const initialState = { items: loadCartFromStorage() }
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState)
+
+  // Persistir carrito en localStorage cuando cambian los items
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.items))
+  }, [state.items])
 
   const addItem = (product) => dispatch({ type: 'ADD_ITEM', payload: product })
   const removeItem = (id) => dispatch({ type: 'REMOVE_ITEM', payload: id })

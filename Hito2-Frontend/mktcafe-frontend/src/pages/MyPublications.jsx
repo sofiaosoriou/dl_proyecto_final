@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { getMyPublications, deletePublication } from '../services/publicationsService'
 import { useAuth } from '../context/AuthContext'
 
@@ -11,6 +11,7 @@ const SAMPLE_MY_PUBS = [
 
 const MyPublications = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [publications, setPublications] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -116,7 +117,7 @@ const MyPublications = () => {
                 <span className="mk-seller-price">${pub.precio?.toLocaleString('es-CL')}</span>
                 <span className="mk-seller-sales">— ventas</span>
                 <div className="mk-seller-actions">
-                  <button className="mk-btn-sm-dark">Editar</button>
+                  <button className="mk-btn-sm-dark" onClick={() => navigate(`/publicaciones/${pub.id}/editar`)}>Editar</button>
                   <button className="mk-btn-sm-danger" onClick={() => handleDelete(pub.id)}>🗑</button>
                 </div>
               </div>

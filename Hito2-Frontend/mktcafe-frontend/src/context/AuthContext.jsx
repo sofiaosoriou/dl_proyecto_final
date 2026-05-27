@@ -110,6 +110,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null)
     localStorage.removeItem('mktcafe_token')
     localStorage.removeItem('mktcafe_user')
+    localStorage.removeItem('mktcafe_cart')
   }
 
   const isAuthenticated = !!user

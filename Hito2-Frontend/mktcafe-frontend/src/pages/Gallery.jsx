@@ -12,7 +12,7 @@ const SAMPLE_PUBLICATIONS = [
 ]
 
 const TUESTOS = ['Todos', 'Tueste Medio', 'Tueste Italiano', 'Claro', 'Oscuro']
-const MOLIENDAS = ['Todos', 'Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina']
+const MOLIENDAS = ['Todos', 'Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina', 'Espresso', 'Prensa Francesa', 'Cold Brew']
 
 const Gallery = () => {
   const [publications, setPublications] = useState([])
@@ -85,7 +85,7 @@ const Gallery = () => {
       {/* Pills */}
       <div className="mk-gallery-header">
         <div className="mk-pills">
-          {['Todos', 'Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina', 'Tueste Medio', 'Tueste Italiano'].map(label => (
+          {['Todos', 'Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina', 'Espresso', 'Tueste Medio', 'Tueste Italiano', 'Claro', 'Oscuro'].map(label => (
             <button
               key={label}
               className={`mk-pill${filterMolienda === label || filterTueste === label || (label === 'Todos' && filterMolienda === 'Todos' && filterTueste === 'Todos') ? ' active' : ''}`}

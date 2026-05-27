@@ -73,9 +73,11 @@ INSERT INTO users (nombre, email, password, bio) VALUES
 ON CONFLICT (email) DO NOTHING;
 
 -- Insertar publicaciones de prueba
+-- tipo_molienda: 'Grano Entero' | 'Molienda Gruesa' | 'Molienda Media' | 'Molienda Fina' | 'Espresso'
+-- tipo_tueste:   'Tueste Medio' | 'Tueste Italiano' | 'Claro' | 'Oscuro'
 INSERT INTO publication (user_id, titulo, descripcion, precio, tipo_molienda, tipo_tueste, origen_pais, origen_region, stock) VALUES
-  (1, 'Sidama Natural', 'Notas de arándano y chocolate negro. Proceso natural.', 12500, 'en grano', 'medio', 'Etiopía', 'Sidama', 50),
-  (1, 'Colombia Huila Washed', 'Café de altura con acidez brillante y notas de frutas tropicales.', 11000, 'molido', 'claro', 'Colombia', 'Huila', 30),
-  (2, 'Guatemala Antigua', 'Body achocolatado y acidez suave. Proceso lavado.', 9500, 'en grano', 'oscuro', 'Guatemala', 'Antigua', 20),
-  (2, 'Peru Cajamarca', 'Notas de nuez y caramelo. Perfecto para espresso.', 10500, 'molido', 'medio', 'Perú', 'Cajamarca', 15)
+  (1, 'Sidama Natural', 'Notas de arándano y chocolate negro. Proceso natural.', 12500, 'Grano Entero', 'Tueste Medio', 'Etiopía', 'Sidama', 50),
+  (1, 'Colombia Huila Washed', 'Café de altura con acidez brillante y notas de frutas tropicales.', 11000, 'Molienda Fina', 'Claro', 'Colombia', 'Huila', 30),
+  (2, 'Guatemala Antigua', 'Body achocolatado y acidez suave. Proceso lavado.', 9500, 'Grano Entero', 'Oscuro', 'Guatemala', 'Antigua', 20),
+  (2, 'Peru Cajamarca', 'Notas de nuez y caramelo. Perfecto para espresso.', 10500, 'Espresso', 'Tueste Medio', 'Perú', 'Cajamarca', 15)
 ON CONFLICT DO NOTHING;

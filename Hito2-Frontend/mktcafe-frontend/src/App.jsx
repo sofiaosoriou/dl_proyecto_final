@@ -15,6 +15,7 @@ import Cart from './pages/Cart'
 import Orders from './pages/Orders'
 import MyPublications from './pages/MyPublications'
 import CreatePublication from './pages/CreatePublication'
+import EditPublication from './pages/EditPublication'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/pedidos" element={<PrivateRoute><Orders /></PrivateRoute>} />
                 <Route path="/mis-publicaciones" element={<PrivateRoute><MyPublications /></PrivateRoute>} />
                 <Route path="/publicaciones/nueva" element={<PrivateRoute><CreatePublication /></PrivateRoute>} />
+                <Route path="/publicaciones/:id/editar" element={<PrivateRoute><EditPublication /></PrivateRoute>} />
 
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
