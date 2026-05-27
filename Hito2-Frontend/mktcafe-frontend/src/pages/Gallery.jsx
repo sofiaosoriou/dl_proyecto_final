@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import ProductCard from '../components/ProductCard'
 import { getPublications } from '../services/publicationsService'
+import { FaSearch, FaCoffee } from 'react-icons/fa'
 
 const SAMPLE_PUBLICATIONS = [
   { id: 1, titulo: 'Tierra de los Incas', descripcion: 'Notas de arándanos, jazmín y chocolate oscuro.', precio: 9990, origen_pais: 'Perú', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Grano Entero', stock: 15, imagen_url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', user: { nombre: 'Carlos Torres' } },
@@ -61,7 +62,7 @@ const Gallery = () => {
       {/* Search bar */}
       <div className="mk-search-bar">
         <div className="mk-search-input-wrap">
-          <span style={{ color: '#ccc' }}>🔍</span>
+          <FaSearch style={{ color: '#ccc' }} />
           <input
             type="text"
             value={search}
@@ -110,7 +111,7 @@ const Gallery = () => {
           <div className="mk-loading"><div className="mk-spinner" /></div>
         ) : filtered.length === 0 ? (
           <div className="mk-empty">
-            <div className="mk-empty-icon">☕</div>
+            <div className="mk-empty-icon" style={{ fontSize: '2.5rem' }}><FaCoffee /></div>
             <p>No encontramos cafés con esos filtros.</p>
           </div>
         ) : (

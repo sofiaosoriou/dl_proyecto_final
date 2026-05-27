@@ -30,8 +30,20 @@ CREATE TABLE IF NOT EXISTS publication (
   origen_region   VARCHAR(100),
   imagen_url      TEXT,
   stock           INTEGER DEFAULT 0,
+  active          BOOLEAN DEFAULT true,
   created_at      TIMESTAMP DEFAULT NOW()
 );
+
+-- Migración: agregar campo active si no existe (para bases de datos ya creadas)
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'publication' AND column_name = 'active'
+  ) THEN
+    ALTER TABLE publication ADD COLUMN active BOOLEAN DEFAULT true;
+  END IF;
+END $$;
 
 -- Tabla de pedidos
 CREATE TABLE IF NOT EXISTS "order" (

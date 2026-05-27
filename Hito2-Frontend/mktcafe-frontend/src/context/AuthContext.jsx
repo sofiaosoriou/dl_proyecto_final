@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { loginUser, registerUser } from '../services/authService'
+import { loginUser, registerUser, getUserProfile, updateUserProfile } from '../services/authService'
 
 export const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
@@ -113,10 +113,25 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('mktcafe_cart')
   }
 
+  const updateProfile = async (profileData) => {
+    setError(null)
+    try {
+      await updateUserProfile(profileData)
+      const fresh = await getUserProfile()
+      const updatedUser = fresh.user || fresh
+      setUser(updatedUser)
+      localStorage.setItem('mktcafe_user', JSON.stringify(updatedUser))
+      return true
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error al actualizar el perfil')
+      return false
+    }
+  }
+
   const isAuthenticated = !!user
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, error, isAuthenticated, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, error, isAuthenticated, login, register, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   )

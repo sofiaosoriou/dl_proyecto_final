@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { FaCartPlus } from 'react-icons/fa'
 
 const ProductCard = ({ publication, showActions = true, dark = false }) => {
   const { addItem } = useCart()
@@ -52,7 +53,7 @@ const ProductCard = ({ publication, showActions = true, dark = false }) => {
             onClick={handleAddToCart}
             disabled={!stock || stock === 0}
           >
-            🛒
+            <FaCartPlus style={{ fontSize: '1rem' }} />
           </button>
         </div>
       )}

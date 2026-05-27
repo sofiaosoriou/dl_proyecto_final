@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { getPublicationById, addFavorite, removeFavorite } from '../services/publicationsService'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
+import { FaShoppingCart, FaHeart, FaRegHeart } from 'react-icons/fa'
 
 const SAMPLE = {
   id: 1,
@@ -156,10 +157,16 @@ const PublicationDetail = () => {
           {/* Actions */}
           <div className="mk-action-row">
             <button className="mk-btn-dark" onClick={handleAddToCart} disabled={!publication.stock}>
-              {added ? '✓ Agregado al carrito' : '🛒 Agregar al carrito'}
+              {added
+                ? '✓ Agregado al carrito'
+                : <><FaShoppingCart style={{ marginRight: 6 }} />Agregar al carrito</>
+              }
             </button>
             <button className="mk-btn-outline" onClick={handleToggleFavorite}>
-              {isFavorited ? '❤️ En favoritos' : '♡ Agregar a favoritos'}
+              {isFavorited
+                ? <><FaHeart style={{ marginRight: 6, color: '#e74c3c' }} />En favoritos</>
+                : <><FaRegHeart style={{ marginRight: 6 }} />Agregar a favoritos</>
+              }
             </button>
           </div>
         </div>

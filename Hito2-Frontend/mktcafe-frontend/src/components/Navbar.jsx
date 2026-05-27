@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { BsCart3 } from 'react-icons/bs'
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth()
@@ -39,7 +40,7 @@ const Navbar = () => {
 
       <div className="mk-nav-links">
         <Link className="mk-cart-icon" to="/carrito">
-          🛍️
+          <BsCart3 style={{ fontSize: '1.3rem' }} />
           {totalItems > 0 && (
             <span className="mk-cart-badge">{totalItems}</span>
           )}

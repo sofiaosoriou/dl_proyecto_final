@@ -1,24 +1,52 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContext'
+import { FaTimes, FaEdit } from 'react-icons/fa'
 
 const Profile = () => {
-  const { user, logout } = useAuth()
+  const { user, logout, updateProfile } = useAuth()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('publicaciones')
   const [editMode, setEditMode] = useState(false)
-  const [formData, setFormData] = useState({ nombre: user?.nombre || '', bio: user?.bio || '' })
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      nombre: user?.nombre || '',
+      bio: user?.bio || '',
+    },
+  })
 
   const handleLogout = () => {
     logout()
     navigate('/')
   }
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value })
+  const handleEditToggle = () => {
+    if (!editMode) {
+      reset({ nombre: user?.nombre || '', bio: user?.bio || '' })
+    }
+    setEditMode(!editMode)
+    setSaveError(null)
+  }
 
-  const handleSave = (e) => {
-    e.preventDefault()
-    setEditMode(false)
+  const onSubmit = async (data) => {
+    setSaving(true)
+    setSaveError(null)
+    const ok = await updateProfile({ nombre: data.nombre, bio: data.bio })
+    setSaving(false)
+    if (ok) {
+      setEditMode(false)
+    } else {
+      setSaveError('No se pudo guardar. Intenta de nuevo.')
+    }
   }
 
   const initials = user?.nombre
@@ -34,8 +62,11 @@ const Profile = () => {
           <div className="mk-profile-name">{user?.nombre}</div>
           <div className="mk-profile-email">{user?.email}</div>
           {user?.bio && <div className="mk-profile-bio">{user.bio}</div>}
-          <button className="mk-profile-edit-btn" onClick={() => setEditMode(!editMode)}>
-            {editMode ? '✕ Cancelar' : '✏ Editar perfil'}
+          <button className="mk-profile-edit-btn" onClick={handleEditToggle}>
+            {editMode
+              ? <><FaTimes style={{ marginRight: 4 }} />Cancelar</>
+              : <><FaEdit style={{ marginRight: 4 }} />Editar perfil</>
+            }
           </button>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 0 }}>
@@ -73,16 +104,28 @@ const Profile = () => {
       <div className="mk-tab-content">
         {activeTab === 'datos' && (
           editMode ? (
-            <form onSubmit={handleSave} style={{ maxWidth: 500 }}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: 500 }} noValidate>
               <div className="mk-fgroup">
                 <label className="mk-flabel">Nombre</label>
-                <input type="text" name="nombre" className="mk-finput" value={formData.nombre} onChange={handleChange} />
+                <input
+                  type="text"
+                  className={`mk-finput${errors.nombre ? ' mk-error' : ''}`}
+                  {...register('nombre', { required: 'El nombre es obligatorio', minLength: { value: 2, message: 'Mínimo 2 caracteres' } })}
+                />
+                {errors.nombre && <div className="mk-ferror">{errors.nombre.message}</div>}
               </div>
               <div className="mk-fgroup">
                 <label className="mk-flabel">Bio</label>
-                <textarea name="bio" className="mk-ftextarea" value={formData.bio} onChange={handleChange} placeholder="Cuéntanos algo sobre ti..." />
+                <textarea
+                  className="mk-ftextarea"
+                  placeholder="Cuéntanos algo sobre ti..."
+                  {...register('bio')}
+                />
               </div>
-              <button type="submit" className="mk-fbtn" style={{ marginTop: 16 }}>Guardar cambios</button>
+              {saveError && <div style={{ color: '#c0392b', fontSize: 13, marginBottom: 8 }}>{saveError}</div>}
+              <button type="submit" className="mk-fbtn" style={{ marginTop: 16 }} disabled={saving}>
+                {saving ? 'Guardando...' : 'Guardar cambios'}
+              </button>
             </form>
           ) : (
             <div style={{ maxWidth: 500 }}>

@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import { getPublications } from '../services/publicationsService'
 import { useAuth } from '../context/AuthContext'
+import { FaCoffee, FaFire } from 'react-icons/fa'
+import { GiCoffeeBeans } from 'react-icons/gi'
+import { BsCircleFill } from 'react-icons/bs'
 
 const SAMPLE_PUBLICATIONS = [
   { id: 1, titulo: 'Tierra de los Incas', precio: 9990, origen_pais: 'Perú', origen_region: 'Cuenca Central', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Grano Entero', stock: 15, imagen_url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', user: { nombre: 'Carlos Torres' } },
@@ -60,13 +63,13 @@ const Home = () => {
         </p>
         <div className="mk-features">
           {[
-            { icon: '☕', label: 'En Grano' },
-            { icon: '⚗️', label: 'Molienda' },
-            { icon: '🔥', label: 'Tueste Medio' },
-            { icon: '🌑', label: 'Tueste Italiano' },
+            { icon: <FaCoffee />, label: 'En Grano' },
+            { icon: <GiCoffeeBeans />, label: 'Molienda' },
+            { icon: <FaFire />, label: 'Tueste Medio' },
+            { icon: <BsCircleFill style={{ color: '#111' }} />, label: 'Tueste Italiano' },
           ].map((f) => (
             <div className="mk-feature" key={f.label}>
-              <div className="mk-feature-icon">{f.icon}</div>
+              <div className="mk-feature-icon" style={{ fontSize: '1.4rem' }}>{f.icon}</div>
               <div className="mk-feature-divider" />
               <div className="mk-feature-label">{f.label}</div>
             </div>

@@ -46,7 +46,7 @@ router.get("/", async (req, res) => {
            json_build_object('id', u.id, 'nombre', u.nombre) AS vendedor
     FROM publication p
     JOIN users u ON p.user_id = u.id
-    WHERE 1=1
+    WHERE p.active = true
   `;
   const params = [];
   let paramIndex = 1;
@@ -76,12 +76,12 @@ router.get("/", async (req, res) => {
 
 /**
  * GET /publications/mine
- * Obtener publicaciones propias del usuario autenticado.
+ * Obtener TODAS las publicaciones propias (activas e inactivas) del usuario autenticado.
  */
 router.get("/mine", verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, titulo, precio, stock, imagen_url, created_at
+      `SELECT id, titulo, precio, stock, imagen_url, active, created_at
        FROM publication
        WHERE user_id = $1
        ORDER BY created_at DESC`,
@@ -236,7 +236,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 
 /**
  * DELETE /api/publications/:id
- * Eliminar publicación propia. Requiere autenticación.
+ * Desactivar publicación propia (soft delete). Requiere autenticación.
  */
 router.delete("/:id", verifyToken, async (req, res) => {
   const { id } = req.params;
@@ -254,14 +254,52 @@ router.delete("/:id", verifyToken, async (req, res) => {
     if (check.rows[0].user_id !== req.user.id) {
       return res
         .status(403)
-        .json({ error: "No tienes permiso para eliminar esta publicación." });
+        .json({ error: "No tienes permiso para desactivar esta publicación." });
     }
 
-    await pool.query("DELETE FROM publication WHERE id = $1", [id]);
+    await pool.query(
+      "UPDATE publication SET active = false WHERE id = $1",
+      [id]
+    );
 
-    res.status(200).json({ message: "Publicación eliminada" });
+    res.status(200).json({ message: "Publicación pausada" });
   } catch (error) {
-    console.error("Error al eliminar publicación:", error.message);
+    console.error("Error al desactivar publicación:", error.message);
+    res.status(500).json({ error: "Error interno del servidor." });
+  }
+});
+
+/**
+ * PUT /api/publications/:id/restore
+ * Reactivar publicación propia pausada. Requiere autenticación.
+ */
+router.put("/:id/restore", verifyToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const check = await pool.query(
+      "SELECT user_id FROM publication WHERE id = $1",
+      [id]
+    );
+
+    if (check.rows.length === 0) {
+      return res.status(404).json({ error: "Publicación no encontrada." });
+    }
+
+    if (check.rows[0].user_id !== req.user.id) {
+      return res
+        .status(403)
+        .json({ error: "No tienes permiso para reactivar esta publicación." });
+    }
+
+    await pool.query(
+      "UPDATE publication SET active = true WHERE id = $1",
+      [id]
+    );
+
+    res.status(200).json({ message: "Publicación reactivada" });
+  } catch (error) {
+    console.error("Error al reactivar publicación:", error.message);
     res.status(500).json({ error: "Error interno del servidor." });
   }
 });

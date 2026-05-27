@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getOrders } from '../services/publicationsService'
+import { FaInbox } from 'react-icons/fa'
 
 const SAMPLE_ORDERS = [
   { id: 124, total: 44980, estado: 'entregado', created_at: '2024-04-18', items: [{ titulo: 'Tierra de los Incas', cantidad: 2, precio_unitario: 9990 }, { titulo: 'Sidama', cantidad: 1, precio_unitario: 11500 }] },
@@ -72,7 +73,7 @@ const Orders = () => {
 
       {filtered.length === 0 ? (
         <div className="mk-empty">
-          <div className="mk-empty-icon">📭</div>
+          <div className="mk-empty-icon" style={{ fontSize: '2.5rem' }}><FaInbox /></div>
           <p>No tienes pedidos aún.</p>
           <Link to="/tienda" className="mk-btn-sm-dark">Ir a la tienda</Link>
         </div>

@@ -24,9 +24,15 @@ export const updatePublication = async (id, publicationData) => {
   return response.data
 }
 
-// DELETE /api/publications/:id — Eliminar publicación propia
+// DELETE /api/publications/:id — Desactivar publicación propia (soft delete)
 export const deletePublication = async (id) => {
   const response = await api.delete(`/publications/${id}`)
+  return response.data
+}
+
+// PUT /api/publications/:id/restore — Reactivar publicación propia
+export const restorePublication = async (id) => {
+  const response = await api.put(`/publications/${id}/restore`)
   return response.data
 }
 

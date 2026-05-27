@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { getMyPublications, deletePublication } from '../services/publicationsService'
+import { getMyPublications, deletePublication, restorePublication } from '../services/publicationsService'
 import { useAuth } from '../context/AuthContext'
+import { FaExchangeAlt, FaBoxOpen, FaTrashAlt, FaToggleOn, FaToggleOff } from 'react-icons/fa'
 
 const SAMPLE_MY_PUBS = [
   { id: 1, titulo: 'Tierra de los Incas', origen_pais: 'Perú', origen_region: 'Cuenca Central', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Grano Entero', precio: 9990, imagen_url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=100' },
@@ -29,13 +30,20 @@ const MyPublications = () => {
     fetch()
   }, [])
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Eliminar esta publicación?')) return
+  const handleToggleActive = async (id, currentActive) => {
+    const action = currentActive ? 'pausar' : 'activar'
+    if (!window.confirm(`¿Deseas ${action} esta publicación?`)) return
     try {
-      await deletePublication(id)
-      setPublications(prev => prev.filter(p => p.id !== id))
+      if (currentActive) {
+        await deletePublication(id)
+      } else {
+        await restorePublication(id)
+      }
+      setPublications(prev =>
+        prev.map(p => p.id === id ? { ...p, active: !currentActive } : p)
+      )
     } catch {
-      alert('No se pudo eliminar. Intenta de nuevo.')
+      alert(`No se pudo ${action} la publicación. Intenta de nuevo.`)
     }
   }
 
@@ -73,7 +81,7 @@ const MyPublications = () => {
       <div className="mk-tab-content">
         {/* Info C2C */}
         <div className="mk-c2c-notice">
-          <span>🔄</span>
+          <FaExchangeAlt style={{ flexShrink: 0 }} />
           <span>Como vendedor, solo puedes editar o eliminar <strong style={{ color: '#111' }}>tus propias publicaciones</strong>.</span>
         </div>
 
@@ -84,7 +92,7 @@ const MyPublications = () => {
 
         {publications.length === 0 ? (
           <div className="mk-empty">
-            <div className="mk-empty-icon">📦</div>
+            <div className="mk-empty-icon" style={{ fontSize: '2.5rem' }}><FaBoxOpen /></div>
             <p>No tienes publicaciones aún.</p>
             <Link to="/publicaciones/nueva" className="mk-btn-sm-dark" style={{ marginTop: 16 }}>
               Crear mi primera publicación
@@ -101,12 +109,19 @@ const MyPublications = () => {
               <span>Acciones</span>
             </div>
             {publications.map((pub) => (
-              <div key={pub.id} className="mk-seller-row">
+              <div key={pub.id} className="mk-seller-row" style={{ opacity: pub.active === false ? 0.55 : 1 }}>
                 <div className="mk-seller-thumb">
                   {pub.imagen_url && <img src={pub.imagen_url} alt={pub.titulo} />}
                 </div>
                 <div>
-                  <div className="mk-seller-product-name">{pub.titulo}</div>
+                  <div className="mk-seller-product-name">
+                    {pub.titulo}
+                    {pub.active === false && (
+                      <span style={{ marginLeft: 8, fontSize: 9, background: '#eee', color: '#888', padding: '2px 6px', borderRadius: 4, letterSpacing: 1, textTransform: 'uppercase' }}>
+                        Pausada
+                      </span>
+                    )}
+                  </div>
                   <div className="mk-seller-product-origin">
                     Origen: {pub.origen_pais}{pub.origen_region ? ` · ${pub.origen_region}` : ''}
                   </div>
@@ -118,7 +133,16 @@ const MyPublications = () => {
                 <span className="mk-seller-sales">— ventas</span>
                 <div className="mk-seller-actions">
                   <button className="mk-btn-sm-dark" onClick={() => navigate(`/publicaciones/${pub.id}/editar`)}>Editar</button>
-                  <button className="mk-btn-sm-danger" onClick={() => handleDelete(pub.id)}>🗑</button>
+                  <button
+                    className={pub.active === false ? 'mk-btn-sm-dark' : 'mk-btn-sm-danger'}
+                    onClick={() => handleToggleActive(pub.id, pub.active !== false)}
+                    title={pub.active === false ? 'Activar publicación' : 'Pausar publicación'}
+                  >
+                    {pub.active === false
+                      ? <FaToggleOff style={{ fontSize: '1rem' }} />
+                      : <FaToggleOn style={{ fontSize: '1rem' }} />
+                    }
+                  </button>
                 </div>
               </div>
             ))}

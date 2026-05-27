@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { createOrder } from '../services/publicationsService'
+import { BsCartX } from 'react-icons/bs'
 
 const Cart = () => {
   const { items, totalItems, totalPrice, removeItem, updateQuantity, clearCart } = useCart()
@@ -40,7 +41,7 @@ const Cart = () => {
   if (totalItems === 0) {
     return (
       <div className="mk-empty" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="mk-empty-icon">🛍️</div>
+        <div className="mk-empty-icon" style={{ fontSize: '2.5rem' }}><BsCartX /></div>
         <p>Tu carrito está vacío.</p>
         <Link to="/tienda" className="mk-btn-sm-dark" style={{ marginTop: 16 }}>Ir a la tienda</Link>
       </div>
