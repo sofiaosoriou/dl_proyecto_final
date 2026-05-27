@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { getPublicationById } from '../services/publicationsService'
+import { getPublicationById, addFavorite, removeFavorite } from '../services/publicationsService'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 
@@ -27,6 +27,7 @@ const PublicationDetail = () => {
   const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(false)
 
   useEffect(() => {
     const fetch = async () => {
@@ -53,6 +54,24 @@ const PublicationDetail = () => {
   const handleBuyNow = () => {
     handleAddToCart()
     navigate(isAuthenticated ? '/carrito' : '/login')
+  }
+
+  const handleToggleFavorite = async () => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      return
+    }
+    try {
+      if (isFavorited) {
+        await removeFavorite(publication.id)
+        setIsFavorited(false)
+      } else {
+        await addFavorite(publication.id)
+        setIsFavorited(true)
+      }
+    } catch {
+      // Silently ignore favorites errors (backend may not have the route)
+    }
   }
 
   if (loading) return <div className="mk-loading"><div className="mk-spinner" /></div>
@@ -118,7 +137,9 @@ const PublicationDetail = () => {
           <div className="mk-seller-row">
             <div className="mk-seller-avatar" />
             <div>
-              <div className="mk-seller-name">{publication.user?.nombre || 'Vendedor'}</div>
+              <div className="mk-seller-name">
+                {(publication.user || publication.vendedor)?.nombre || 'Vendedor'}
+              </div>
               <div className="mk-seller-label">Vendedor · MktCafé</div>
             </div>
           </div>
@@ -137,8 +158,8 @@ const PublicationDetail = () => {
             <button className="mk-btn-dark" onClick={handleAddToCart} disabled={!publication.stock}>
               {added ? '✓ Agregado al carrito' : '🛒 Agregar al carrito'}
             </button>
-            <button className="mk-btn-outline" onClick={handleBuyNow} disabled={!publication.stock}>
-              ♡ Agregar a favoritos
+            <button className="mk-btn-outline" onClick={handleToggleFavorite}>
+              {isFavorited ? '❤️ En favoritos' : '♡ Agregar a favoritos'}
             </button>
           </div>
         </div>

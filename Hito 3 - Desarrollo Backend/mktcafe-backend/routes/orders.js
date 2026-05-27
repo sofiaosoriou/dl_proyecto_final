@@ -97,15 +97,25 @@ router.post("/", verifyToken, async (req, res) => {
 
 /**
  * GET /api/orders
- * Obtener historial de pedidos del usuario autenticado.
+ * Obtener historial de pedidos del usuario autenticado (incluye items).
  */
 router.get("/", verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT o.id, o.total, o.estado, o.created_at,
-              COUNT(oi.id)::int AS items_count
+              COALESCE(
+                json_agg(
+                  json_build_object(
+                    'titulo', p.titulo,
+                    'cantidad', oi.cantidad,
+                    'precio_unitario', oi.precio_unitario
+                  )
+                ) FILTER (WHERE oi.id IS NOT NULL),
+                '[]'
+              ) AS items
        FROM "order" o
-       LEFT JOIN order_item oi ON o.id = oi.order_id
+       LEFT JOIN order_item oi ON oi.order_id = o.id
+       LEFT JOIN publication p ON p.id = oi.publication_id
        WHERE o.buyer_id = $1
        GROUP BY o.id
        ORDER BY o.created_at DESC`,

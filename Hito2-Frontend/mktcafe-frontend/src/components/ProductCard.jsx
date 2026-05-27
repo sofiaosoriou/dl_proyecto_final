@@ -13,8 +13,10 @@ const ProductCard = ({ publication, showActions = true, dark = false }) => {
     tipo_tueste,
     tipo_molienda,
     stock,
-    user,
   } = publication
+
+  // El backend puede retornar el vendedor bajo la clave 'vendedor' o 'user'
+  const seller = publication.user || publication.vendedor
 
   const handleAddToCart = () => {
     addItem({ id, titulo, precio, imagen_url, stock })
@@ -38,8 +40,8 @@ const ProductCard = ({ publication, showActions = true, dark = false }) => {
       {origen_pais && (
         <div className="mk-product-seller">Origen: {origen_pais}</div>
       )}
-      {user?.nombre && (
-        <div className="mk-product-seller">Por: {user.nombre}</div>
+      {seller?.nombre && (
+        <div className="mk-product-seller">Por: {seller.nombre}</div>
       )}
 
       {showActions && (
