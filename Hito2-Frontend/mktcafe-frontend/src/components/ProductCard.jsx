@@ -27,12 +27,14 @@ const ProductCard = ({ publication, showActions = true, dark = false }) => {
 
   return (
     <div className={cardClass}>
-      <div className="mk-product-img">
-        {imagen_url
-          ? <img src={imagen_url} alt={titulo} />
-          : '[ IMAGEN ]'
-        }
-      </div>
+      <Link to={`/publicaciones/${id}`} className="mk-product-img-link">
+        <div className="mk-product-img">
+          {imagen_url
+            ? <img src={imagen_url} alt={titulo} />
+            : '[ IMAGEN ]'
+          }
+        </div>
+      </Link>
       <div className="mk-product-cat">
         {[tipo_molienda, tipo_tueste].filter(Boolean).join(' · ')}
       </div>
