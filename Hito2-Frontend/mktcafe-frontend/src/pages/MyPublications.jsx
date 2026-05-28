@@ -63,7 +63,11 @@ const MyPublications = () => {
     <>
       {/* Profile header */}
       <div className="mk-profile-header">
-        <div className="mk-avatar">{initials}</div>
+        {user?.foto_url ? (
+          <img src={user.foto_url} alt={user.nombre} className="mk-avatar" style={{ objectFit: 'cover' }} />
+        ) : (
+          <div className="mk-avatar">{initials}</div>
+        )}
         <div>
           <div className="mk-profile-name">{user?.nombre}</div>
           <div className="mk-profile-email">{user?.email}</div>
