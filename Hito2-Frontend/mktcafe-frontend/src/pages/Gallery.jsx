@@ -3,14 +3,6 @@ import ProductCard from '../components/ProductCard'
 import { getPublications } from '../services/publicationsService'
 import { FaSearch, FaCoffee } from 'react-icons/fa'
 
-const SAMPLE_PUBLICATIONS = [
-  { id: 1, titulo: 'Tierra de los Incas', descripcion: 'Notas de arándanos, jazmín y chocolate oscuro.', precio: 9990, origen_pais: 'Perú', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Grano Entero', stock: 15, imagen_url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', user: { nombre: 'Carlos Torres' } },
-  { id: 2, titulo: 'Tierra de Volcanes', descripcion: 'Acidez cítrica brillante con notas de panela y mandarina.', precio: 10500, origen_pais: 'El Salvador', tipo_tueste: 'Tueste Italiano', tipo_molienda: 'Grano Entero', stock: 8, imagen_url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400', user: { nombre: 'María López' } },
-  { id: 3, titulo: 'País Cafetero', descripcion: 'Equilibrado y suave, con cacao, nuez moscada y cítricos.', precio: 8500, origen_pais: 'Colombia', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Molienda Media', stock: 20, imagen_url: 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=400', user: { nombre: 'Pedro Sánchez' } },
-  { id: 4, titulo: 'Sidama', descripcion: 'Café de especialidad de la región de Sidama, Etiopía.', precio: 11500, origen_pais: 'Etiopía', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Molienda Fina', stock: 5, imagen_url: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400', user: { nombre: 'Lucía Ramírez' } },
-  { id: 5, titulo: 'Amazonía Alta', descripcion: 'Dulce, con notas de caramelo y frutos secos.', precio: 9200, origen_pais: 'Perú', tipo_tueste: 'Tueste Italiano', tipo_molienda: 'Molienda Gruesa', stock: 12, imagen_url: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400', user: { nombre: 'Diego Flores' } },
-  { id: 6, titulo: 'Tierra de los Incas II', descripcion: 'Segunda cosecha. Perfil frutal y floral único.', precio: 9990, origen_pais: 'Perú', tipo_tueste: 'Tueste Medio', tipo_molienda: 'Grano Entero', stock: 18, imagen_url: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=400', user: { nombre: 'Ana Martínez' } },
-]
 
 const TUESTOS = ['Todos', 'Tueste Medio', 'Tueste Italiano', 'Claro', 'Oscuro']
 const MOLIENDAS = ['Todos', 'Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina', 'Espresso', 'Prensa Francesa', 'Cold Brew']
@@ -29,10 +21,9 @@ const Gallery = () => {
       try {
         const data = await getPublications()
         setPublications(data.publications || data)
-      } catch {
-        const local = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
-        const active = local.filter(p => p.active !== false)
-        setPublications([...active, ...SAMPLE_PUBLICATIONS])
+      } catch (err) {
+        console.error('Error al cargar publicaciones:', err)
+        setPublications([])
       } finally {
         setLoading(false)
       }
