@@ -131,7 +131,7 @@ const PublicationDetail = () => {
             )}
           </div>
           <div className="mk-detail-price">
-            ${publication.precio?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}
+            ${Number(publication.precio)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}
             <span style={{ fontSize: 12, fontWeight: 400, color: '#bbb', marginLeft: 4 }}>/ 250g</span>
           </div>
           {publication.origen_region && (

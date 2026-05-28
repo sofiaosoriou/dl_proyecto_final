@@ -37,7 +37,7 @@ const ProductCard = ({ publication, showActions = true, dark = false }) => {
         {[tipo_molienda, tipo_tueste].filter(Boolean).join(' · ')}
       </div>
       <div className="mk-product-name">{titulo}</div>
-      <div className="mk-product-price">${precio?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</div>
+      <div className="mk-product-price">${Number(precio)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</div>
       {origen_pais && (
         <div className="mk-product-seller">Origen: {origen_pais}</div>
       )}

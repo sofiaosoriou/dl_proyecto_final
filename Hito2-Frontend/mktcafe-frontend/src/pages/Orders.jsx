@@ -98,7 +98,7 @@ const Orders = () => {
                   {new Date(order.created_at).toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
               </div>
-              <span className="mk-order-total">${order.total?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+              <span className="mk-order-total">${Number(order.total)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
               <span className={`mk-status ${STATUS_CLASS[order.estado] || ''}`}>
                 {STATUS_LABEL[order.estado] || order.estado}
               </span>

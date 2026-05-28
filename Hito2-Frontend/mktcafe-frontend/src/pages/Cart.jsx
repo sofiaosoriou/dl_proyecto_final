@@ -68,14 +68,14 @@ const Cart = () => {
               <div style={{ flex: 1 }}>
                 <div className="mk-cart-item-cat">250g</div>
                 <div className="mk-cart-item-name">{item.titulo}</div>
-                <div className="mk-cart-item-origin">${item.precio?.toLocaleString('es-CL', { maximumFractionDigits: 0 })} c/u</div>
+                <div className="mk-cart-item-origin">${Number(item.precio)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })} c/u</div>
               </div>
               <div className="mk-cart-qty">
                 <button className="mk-cart-qty-btn" onClick={() => updateQuantity(item.id, Math.max(1, item.cantidad - 1))}>−</button>
                 <span className="mk-cart-qty-num">{item.cantidad}</span>
                 <button className="mk-cart-qty-btn" onClick={() => updateQuantity(item.id, Math.min(item.stock, item.cantidad + 1))}>+</button>
               </div>
-              <div className="mk-cart-item-total">${(item.precio * item.cantidad).toLocaleString('es-CL', { maximumFractionDigits: 0 })}</div>
+              <div className="mk-cart-item-total">${Number(item.precio * item.cantidad)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</div>
               <button className="mk-cart-remove" onClick={() => removeItem(item.id)}>×</button>
             </div>
           ))}
@@ -96,16 +96,16 @@ const Cart = () => {
           <div className="mk-summary-label">Resumen del pedido</div>
           <div className="mk-summary-row">
             <span>Subtotal ({totalItems} productos)</span>
-            <span>${totalPrice.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+            <span>${Number(totalPrice)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
           </div>
           <div className="mk-summary-row">
             <span>Envío</span>
-            <span>${ENVIO.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+            <span>${Number(ENVIO)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
           </div>
           <div className="mk-summary-divider" />
           <div className="mk-summary-total">
             <span>Total</span>
-            <span>${(totalPrice + ENVIO).toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
+            <span>${Number(totalPrice + ENVIO)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
           </div>
           {error && <div style={{ color: 'red', fontSize: 13, marginBottom: 8 }}>{error}</div>}
           <button className="mk-btn-dark" onClick={handleCheckout} disabled={loading}>
