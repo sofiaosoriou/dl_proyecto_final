@@ -145,6 +145,10 @@ router.post("/", verifyToken, upload.single("imagen"), async (req, res) => {
       .json({ error: "Título y precio son obligatorios." });
   }
 
+  // Debug: ver qué campos llegan
+  console.log("Body recibido:", req.body);
+  console.log("Archivo recibido:", req.file);
+
   // Prioridad: archivo subido > URL externa proporcionada
   const imagen_url = req.file
     ? `/uploads/${req.file.filename}`

@@ -74,3 +74,9 @@ export const removeFavorite = async (publicationId) => {
   const response = await api.delete(`/favorites/${publicationId}`)
   return response.data
 }
+
+// GET /api/favorites — Obtener favoritos del usuario
+export const getFavorites = async () => {
+  const response = await api.get('/favorites')
+  return response.data
+}

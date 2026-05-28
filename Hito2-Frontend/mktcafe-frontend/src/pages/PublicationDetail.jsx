@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { getPublicationById, addFavorite, removeFavorite } from '../services/publicationsService'
+import { getPublicationById, addFavorite, removeFavorite, getFavorites } from '../services/publicationsService'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import { FaShoppingCart, FaHeart, FaRegHeart } from 'react-icons/fa'
@@ -31,18 +31,29 @@ const PublicationDetail = () => {
   const [isFavorited, setIsFavorited] = useState(false)
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
       try {
         const data = await getPublicationById(id)
         setPublication(data)
+        
+        // Verificar si está en favoritos (solo si está autenticado)
+        if (isAuthenticated) {
+          try {
+            const favorites = await getFavorites()
+            const isFav = favorites.some(fav => fav.id === parseInt(id))
+            setIsFavorited(isFav)
+          } catch {
+            // Ignorar error de favoritos
+          }
+        }
       } catch {
         setPublication({ ...SAMPLE, id: parseInt(id) })
       } finally {
         setLoading(false)
       }
     }
-    fetch()
-  }, [id])
+    fetchData()
+  }, [id, isAuthenticated])
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
