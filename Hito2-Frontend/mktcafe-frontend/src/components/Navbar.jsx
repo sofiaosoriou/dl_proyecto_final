@@ -1,13 +1,15 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
-import { BsCart3, BsHeart } from 'react-icons/bs'
+import { BsCart3, BsHeart, BsList } from 'react-icons/bs'
+import { useState } from 'react'
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth()
   const { totalItems } = useCart()
   const navigate = useNavigate()
   const location = useLocation()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -16,11 +18,17 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path ? 'active' : ''
 
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen)
+
   return (
     <nav className="mk-nav">
       <Link className="mk-nav-logo" to="/">MktCafé</Link>
 
-      <div className="mk-nav-links">
+      <button className="mk-mobile-menu-btn" onClick={toggleMobileMenu}>
+        <BsList style={{ fontSize: '1.5rem' }} />
+      </button>
+
+      <div className={`mk-nav-links ${mobileMenuOpen ? 'mobile-visible' : ''}`}>
         <Link className={`mk-nav-link ${isActive('/')}`} to="/">Home</Link>
         <Link className={`mk-nav-link ${isActive('/tienda')}`} to="/tienda">Tienda</Link>
         {isAuthenticated && (
