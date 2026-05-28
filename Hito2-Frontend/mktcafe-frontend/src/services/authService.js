@@ -12,14 +12,16 @@ export const loginUser = async (credentials) => {
   return response.data
 }
 
-// GET /api/users/profile — Obtener perfil del usuario autenticado
+// GET /api/users/:id — Obtener perfil del usuario autenticado
 export const getUserProfile = async () => {
-  const response = await api.get('/users/profile')
+  const user = JSON.parse(localStorage.getItem('mktcafe_user') || '{}')
+  const response = await api.get(`/users/${user.id}`)
   return response.data
 }
 
-// PUT /api/users/profile — Actualizar perfil del usuario autenticado
+// PUT /api/users/:id — Actualizar perfil del usuario autenticado
 export const updateUserProfile = async (profileData) => {
-  const response = await api.put('/users/profile', profileData)
+  const user = JSON.parse(localStorage.getItem('mktcafe_user') || '{}')
+  const response = await api.put(`/users/${user.id}`, profileData)
   return response.data
 }

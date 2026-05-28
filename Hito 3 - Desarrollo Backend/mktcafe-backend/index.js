@@ -46,7 +46,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 //  Rutas de la API
 // ============================================================
 // Rutas con prefijo /api (estándar)
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/publications", publicationRoutes);
 app.use("/api/favorites", favoriteRoutes);
@@ -65,8 +65,8 @@ app.get("/", (req, res) => {
     message: "API REST MktCafé funcionando correctamente ☕",
     version: "1.0.0",
     endpoints: [
-      "POST   /api/login",
-      "POST   /api/users",
+      "POST   /api/auth/register",
+      "POST   /api/auth/login",
       "GET    /api/users/:id",
       "PUT    /api/users/:id",
       "GET    /api/users/:id/publications",

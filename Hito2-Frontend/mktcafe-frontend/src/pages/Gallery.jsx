@@ -30,7 +30,9 @@ const Gallery = () => {
         const data = await getPublications()
         setPublications(data.publications || data)
       } catch {
-        setPublications(SAMPLE_PUBLICATIONS)
+        const local = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
+        const active = local.filter(p => p.active !== false)
+        setPublications([...active, ...SAMPLE_PUBLICATIONS])
       } finally {
         setLoading(false)
       }
