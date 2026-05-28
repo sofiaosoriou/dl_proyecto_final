@@ -140,7 +140,7 @@ const MyPublications = () => {
                   {[pub.tipo_molienda, pub.tipo_tueste].filter(Boolean).join(' · ')}
                 </span>
                 <span className="mk-seller-price">${Number(pub.precio)?.toLocaleString('es-CL', { maximumFractionDigits: 0 })}</span>
-                <span className="mk-seller-sales">— ventas</span>
+                <span className="mk-seller-sales">{pub.ventas || 0} ventas</span>
                 <div className="mk-seller-actions">
                   <button className="mk-btn-sm-dark" onClick={() => navigate(`/publicaciones/${pub.id}/editar`)}>Editar</button>
                   <button

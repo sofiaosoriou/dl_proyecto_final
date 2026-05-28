@@ -76,15 +76,21 @@ router.get("/", async (req, res) => {
 
 /**
  * GET /publications/mine
- * Obtener TODAS las publicaciones propias (activas e inactivas) del usuario autenticado.
+ * Obtener TODAS las publicaciones propias (activas e inactivas) del usuario autenticado
+ * con conteo de ventas.
  */
 router.get("/mine", verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT id, titulo, precio, stock, imagen_url, active, created_at
-       FROM publication
-       WHERE user_id = $1
-       ORDER BY created_at DESC`,
+      `SELECT p.id, p.titulo, p.precio, p.stock, p.imagen_url, p.active, p.created_at,
+              p.tipo_molienda, p.tipo_tueste, p.origen_pais, p.origen_region,
+              COALESCE(SUM(oi.cantidad), 0) as ventas
+       FROM publication p
+       LEFT JOIN order_item oi ON p.id = oi.publication_id
+       WHERE p.user_id = $1
+       GROUP BY p.id, p.titulo, p.precio, p.stock, p.imagen_url, p.active, p.created_at,
+                p.tipo_molienda, p.tipo_tueste, p.origen_pais, p.origen_region
+       ORDER BY p.created_at DESC`,
       [req.user.id]
     );
     res.status(200).json(result.rows);
