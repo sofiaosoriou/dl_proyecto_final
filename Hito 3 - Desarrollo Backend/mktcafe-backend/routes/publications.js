@@ -145,9 +145,10 @@ router.post("/", verifyToken, upload.single("imagen"), async (req, res) => {
       .json({ error: "Título y precio son obligatorios." });
   }
 
+  // Prioridad: archivo subido > URL externa proporcionada
   const imagen_url = req.file
     ? `/uploads/${req.file.filename}`
-    : null;
+    : req.body.imagen_url || null;
 
   try {
     const result = await pool.query(

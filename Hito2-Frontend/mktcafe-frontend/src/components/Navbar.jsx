@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
-import { BsCart3 } from 'react-icons/bs'
+import { BsCart3, BsHeart } from 'react-icons/bs'
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth()
@@ -39,6 +39,11 @@ const Navbar = () => {
       </div>
 
       <div className="mk-nav-links">
+        {isAuthenticated && (
+          <Link className="mk-cart-icon" to="/favoritos" title="Mis favoritos">
+            <BsHeart style={{ fontSize: '1.2rem' }} />
+          </Link>
+        )}
         <Link className="mk-cart-icon" to="/carrito">
           <BsCart3 style={{ fontSize: '1.3rem' }} />
           {totalItems > 0 && (
