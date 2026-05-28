@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
           return false
         }
       }
-      setError(err.response?.data?.message || 'Error al iniciar sesión')
+      setError(err.response?.data?.error || err.response?.data?.message || 'Error al iniciar sesión')
       return false
     }
   }
@@ -85,9 +85,9 @@ export const AuthProvider = ({ children }) => {
   const register = async (nombre, email, password, foto_url) => {
     setError(null)
     try {
-      const data = await registerUser({ nombre, email, password, foto_url })
-      persistSession(data)
-      return true
+      await registerUser({ nombre, email, password, foto_url })
+      // El backend no devuelve token al registrar, hacemos login automático
+      return await login(email, password)
     } catch (err) {
       if (!err.response) {
         // Backend no disponible — usar simulación local
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
           return false
         }
       }
-      setError(err.response?.data?.message || 'Error al registrarse')
+      setError(err.response?.data?.error || err.response?.data?.message || 'Error al registrarse')
       return false
     }
   }
@@ -131,8 +131,4 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, error, isAuthenticated, login, register, logout, updateProfile }}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
+    <AuthContext.Provider value={{ user, token, loading

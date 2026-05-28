@@ -22,7 +22,10 @@ const MyPublications = () => {
         const data = await getMyPublications()
         setPublications(data.publications || data)
       } catch {
-        setPublications(SAMPLE_MY_PUBS)
+        const local = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
+        const userId = user?.id || user?.email
+        const mine = local.filter(p => p.userId === userId)
+        setPublications(mine.length > 0 ? mine : SAMPLE_MY_PUBS)
       } finally {
         setLoading(false)
       }
@@ -39,11 +42,16 @@ const MyPublications = () => {
       } else {
         await restorePublication(id)
       }
-      setPublications(prev =>
-        prev.map(p => p.id === id ? { ...p, active: !currentActive } : p)
-      )
     } catch {
-      alert(`No se pudo ${action} la publicación. Intenta de nuevo.`)
+      // Backend no disponible — actualizar solo en localStorage
+    }
+    const updated = publications.map(p => p.id === id ? { ...p, active: !currentActive } : p)
+    setPublications(updated)
+    const local = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
+    if (local.length > 0) {
+      localStorage.setItem('mktcafe_publications', JSON.stringify(
+        local.map(p => p.id === id ? { ...p, active: !currentActive } : p)
+      ))
     }
   }
 

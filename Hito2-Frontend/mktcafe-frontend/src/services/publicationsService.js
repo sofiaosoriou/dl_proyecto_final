@@ -13,8 +13,17 @@ export const getPublicationById = async (id) => {
 }
 
 // POST /api/publications — Crear nueva publicación (autenticado)
+// El backend usa multer, requiere multipart/form-data
 export const createPublication = async (publicationData) => {
-  const response = await api.post('/publications', publicationData)
+  const formData = new FormData()
+  Object.entries(publicationData).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      formData.append(key, value)
+    }
+  })
+  const response = await api.post('/publications', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
   return response.data
 }
 

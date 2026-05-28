@@ -1,12 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { createPublication } from '../services/publicationsService'
+import { useAuth } from '../context/AuthContext'
 
 const TUESTOS = ['Tueste Medio', 'Tueste Italiano', 'Claro', 'Oscuro']
 const MOLIENDAS = ['Grano Entero', 'Molienda Gruesa', 'Molienda Media', 'Molienda Fina', 'Espresso', 'Prensa Francesa', 'Cold Brew']
 
 const CreatePublication = () => {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const {
     register,
     handleSubmit,
@@ -14,18 +16,26 @@ const CreatePublication = () => {
     reset,
   } = useForm()
 
+  const saveToLocalStorage = (pub) => {
+    const existing = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
+    const newPub = { ...pub, id: Date.now(), active: true, createdAt: new Date().toISOString(), userId: user?.id || user?.email, user: { nombre: user?.nombre || 'Vendedor' } }
+    localStorage.setItem('mktcafe_publications', JSON.stringify([newPub, ...existing]))
+  }
+
   const onSubmit = async (data) => {
-    try {
-      await createPublication({
-        ...data,
-        precio: parseFloat(data.precio),
-        stock: parseInt(data.stock),
-      })
-      reset()
-      navigate('/mis-publicaciones')
-    } catch {
-      alert('Error al crear la publicación. Intenta de nuevo.')
+    const pubData = {
+      ...data,
+      precio: parseFloat(data.precio),
+      stock: parseInt(data.stock),
     }
+    try {
+      await createPublication(pubData)
+    } catch {
+      // Backend no disponible — guardar localmente para demo
+      saveToLocalStorage(pubData)
+    }
+    reset()
+    navigate('/mis-publicaciones')
   }
 
   return (
