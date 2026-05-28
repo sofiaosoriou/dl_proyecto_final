@@ -37,8 +37,9 @@ const Orders = () => {
       try {
         const data = await getOrders()
         setOrders(data.orders || data)
-      } catch {
-        setOrders(SAMPLE_ORDERS)
+      } catch (error) {
+        console.error('Error al cargar pedidos:', error)
+        setOrders([])  // Solo datos de la BD, si falla = vacío
       } finally {
         setLoading(false)
       }

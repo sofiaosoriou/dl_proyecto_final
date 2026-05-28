@@ -21,11 +21,9 @@ const MyPublications = () => {
       try {
         const data = await getMyPublications()
         setPublications(data.publications || data)
-      } catch {
-        const local = JSON.parse(localStorage.getItem('mktcafe_publications') || '[]')
-        const userId = user?.id || user?.email
-        const mine = local.filter(p => p.userId === userId)
-        setPublications(mine.length > 0 ? mine : SAMPLE_MY_PUBS)
+      } catch (error) {
+        console.error('Error al cargar publicaciones:', error)
+        setPublications([])  // Solo datos de la BD, si falla = vacío
       } finally {
         setLoading(false)
       }
